@@ -3,7 +3,8 @@ let userPos = null;
 let destPos = null;
 
 // INIT MAP
-MapProvider.init("map", [20, 0], 2); 
+// Change the zoom from 5 to 13 in app.js
+MapProvider.init("map", [22.5937, 78.9629], 13);
 
 
 // =====================
