@@ -22,14 +22,19 @@ function drawDangerZones(zones) {
 }
 
 
+// Inside map.provider.js
 function init(containerId, center, zoom) {
   map = L.map(containerId, {
-    worldCopyJump: false
+    minZoom: 3,
+    worldCopyJump: false // Prevents jumping between different "worlds"
   }).setView(center, zoom);
 
-  map.setMaxBounds([
-    [-85, -180],
-    [85, 180]
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 19,
+    noWrap: true, // THIS STOPS THE REPEATING MAP
+    bounds: [[-90, -180], [90, 180]] 
+  }).addTo(map);
+}
   ]);
 
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
