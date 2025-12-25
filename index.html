@@ -1,194 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Women Safety Risk Map</title>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&v=beta"></script>
+<!-- Leaflet (FREE map engine) -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-<style>
-body{
-  margin:0;
-  font-family:system-ui, sans-serif;
-  color:#fff;
-
-  /* calm & safe gradient background */
-  background:
-    radial-gradient(600px 400px at 10% 10%, rgba(123,97,255,0.18), transparent 60%),
-    radial-gradient(500px 350px at 90% 20%, rgba(53,208,127,0.15), transparent 60%),
-    radial-gradient(400px 300px at 50% 90%, rgba(154,77,255,0.18), transparent 60%),
-    linear-gradient(135deg, #0a0f2b, #11184a, #1b1f63);
-    min-height:100vh;
-}
-
-.container{
-  max-width:900px;
-  margin:auto;
-  padding:16px;
-  background:rgba(18,24,64,0.45);
-  backdrop-filter: blur(12px);
-  border-radius:16px;
-  box-shadow:0 20px 40px rgba(0,0,0,0.35);
-}
-
-#map{
-  height:420px;
-  border-radius:12px;
-  border:1px solid #2c3270;
-}
-input{
-  width:100%;
-  padding:10px;
-  margin-bottom:10px;
-  border-radius:10px;
-  border:1px solid #2c3270;
-  background:#0f1440;
-  color:#fff;
-}
-button{
-  padding:10px 14px;
-  border-radius:10px;
-  border:none;
-  cursor:pointer;
-  background:#141a4c;
-  color:white;
-}
-button.primary{
-  background:linear-gradient(135deg,#7b61ff,#9a4dff);
-  color:#0a0930;
-  font-weight:600;
-}
-.buttons{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-top:10px;
-}
-#statusBox{
-  margin-top:10px;
-  padding:10px;
-  border-radius:10px;
-  background:#121840;
-  border:1px solid #2c3270;
-  display:none;
-  font-size:14px;
-}
-@keyframes sosFlash{
-  0%{background:#0a0f2b}
-  50%{background:#2b1320}
-  100%{background:#0a0f2b}
-}
-</style>
+<!-- App styles -->
+<link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
 <div class="container">
 
-<input id="destination" disabled placeholder="Click on map to choose destination">
+  <input id="destination" disabled placeholder="Click on map to choose destination">
 
-<div id="map"></div>
+  <div id="map"></div>
 
-<div class="buttons">
-  <button id="simulate">Simulate route</button>
-  <button id="share">Share live location</button>
-  <button class="primary" id="sos">One-click SOS</button>
+  <div class="buttons">
+    <button id="simulate">Simulate route</button>
+    <button id="share">Share live location</button>
+    <button class="primary" id="sos">🚨 One-click SOS</button>
+  </div>
+
+  <div id="statusBox"></div>
+
 </div>
 
-<div id="statusBox"></div>
-
-</div>
-
-<script>
-const SAFE_PLACES=[
- {type:"Police",icon:"👮",o:[0.004,0.002]},
- {type:"Hospital",icon:"🏥",o:[-0.003,0.001]},
- {type:"Store",icon:"🏪",o:[0.002,-0.004]},
-];
-
-let map,userMarker,destinationMarker;
-let dangerLayers=[];
-const statusBox=document.getElementById("statusBox");
-
-// INIT MAP
-map=L.map("map").setView([22.5937,78.9629],5);
-L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:18}).addTo(map);
-
-// GEOLOCATION
-navigator.geolocation.getCurrentPosition(pos=>{
-  const u=[pos.coords.latitude,pos.coords.longitude];
-  map.setView(u,13);
-  userMarker=L.marker(u).addTo(map).bindPopup("You are here").openPopup();
-  drawDangerZones(u);
-  showSafePlaces(u);
-});
-
-// MAP CLICK DESTINATION
-map.on("click",e=>{
-  const {lat,lng}=e.latlng;
-  document.getElementById("destination").value=
-    `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
-  if(destinationMarker) map.removeLayer(destinationMarker);
-  destinationMarker=L.marker([lat,lng]).addTo(map).bindPopup("Destination").openPopup();
-  statusBox.style.display="block";
-  statusBox.innerHTML=`📍 Destination selected`;
-});
-
-// DANGER ZONES
-function drawDangerZones(c){
-  dangerLayers.forEach(z=>map.removeLayer(z));
-  dangerLayers=[];
-  [
-    {dx:0.005,dy:0.003,c:"#ff5c7a",r:500},
-    {dx:-0.004,dy:-0.003,c:"#ffd166",r:700},
-  ].forEach(z=>{
-    dangerLayers.push(
-      L.circle([c[0]+z.dx,c[1]+z.dy],{
-        radius:z.r,color:z.c,fillOpacity:0.25
-      }).addTo(map)
-    );
-  });
-}
-
-// SAFE PLACES
-function showSafePlaces(latlng){
-  SAFE_PLACES.forEach(p=>{
-    L.marker([latlng[0]+p.o[0],latlng[1]+p.o[1]],{
-      icon:L.divIcon({html:`<div style="font-size:20px">${p.icon}</div>`})
-    }).addTo(map).bindPopup(p.type);
-  });
-}
-
-// ROUTE SIMULATION
-document.getElementById("simulate").onclick=()=>{
-  if(!destinationMarker||!userMarker) return;
-  const s=userMarker.getLatLng();
-  const d=destinationMarker.getLatLng();
-  if(window.route) map.removeLayer(window.route);
-  window.route=L.polyline([[s.lat,s.lng],[d.lat,d.lng]],{
-    color:"#35d07f",weight:4
-  }).addTo(map);
-  map.fitBounds(window.route.getBounds(),{padding:[30,30]});
-  statusBox.style.display="block";
-  statusBox.innerHTML="🧠 Route analyzed";
-};
-
-// LIVE LOCATION
-document.getElementById("share").onclick=()=>{
-  navigator.geolocation.getCurrentPosition(p=>{
-    statusBox.style.display="block";
-    statusBox.innerHTML=`📡 Live location shared<br>
-    ${p.coords.latitude.toFixed(5)}, ${p.coords.longitude.toFixed(5)}`;
-  });
-};
-
-// SOS
-document.getElementById("sos").onclick=()=>{
-  statusBox.style.display="block";
-  statusBox.innerHTML="🚨 SOS ACTIVATED";
-  document.body.style.animation="sosFlash 1s infinite";
-  setTimeout(()=>document.body.style.animation="",8000);
-};
-</script>
+<script src="./map.provider.js"></script>
+<script src="./app.js"></script>
 </body>
 </html>
