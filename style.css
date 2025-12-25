@@ -1,0 +1,68 @@
+body{
+  margin:0;
+  font-family:system-ui,sans-serif;
+  color:#fff;
+  background:
+    radial-gradient(600px 400px at 10% 10%, rgba(123,97,255,0.18), transparent 60%),
+    radial-gradient(500px 350px at 90% 20%, rgba(53,208,127,0.15), transparent 60%),
+    linear-gradient(135deg,#0a0f2b,#11184a,#1b1f63);
+  min-height:100vh;
+}
+
+.container{
+  max-width:900px;
+  margin:auto;
+  padding:16px;
+}
+
+#map{
+  height:420px;
+  border-radius:12px;
+  border:1px solid #2c3270;
+}
+
+input{
+  width:100%;
+  padding:10px;
+  margin-bottom:10px;
+  border-radius:10px;
+  border:1px solid #2c3270;
+  background:#0f1440;
+  color:#fff;
+}
+
+.buttons{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:10px;
+}
+
+button{
+  padding:10px 14px;
+  border-radius:10px;
+  border:none;
+  cursor:pointer;
+  background:#141a4c;
+  color:white;
+}
+
+button.primary{
+  background:linear-gradient(135deg,#7b61ff,#9a4dff);
+  color:#0a0930;
+  font-weight:600;
+}
+
+#statusBox{
+  margin-top:10px;
+  padding:10px;
+  border-radius:10px;
+  background:#121840;
+  border:1px solid #2c3270;
+}
+
+@keyframes sosFlash{
+  0%{background:#0a0f2b}
+  50%{background:#2b1320}
+  100%{background:#0a0f2b}
+}
