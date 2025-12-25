@@ -4,7 +4,7 @@ const MapProvider = (() => {
   let dangerLayers = [];
 
 function drawDangerZones(zones) {
-  // clear old zones
+  
   dangerLayers.forEach(z => map.removeLayer(z));
   dangerLayers = [];
 
@@ -65,10 +65,11 @@ function drawDangerZones(zones) {
   }
 
   return {
-    init,
-    onClick,
-    setUserLocation,
-    setDestination,
-    drawRoute
-  };
+  init,
+  onClick,
+  setUserLocation,
+  setDestination,
+  drawRoute,
+  drawDangerZones  
+};
 })();
