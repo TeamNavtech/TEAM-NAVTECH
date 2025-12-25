@@ -22,12 +22,26 @@ function drawDangerZones(zones) {
 }
 
 
-  function init(containerId, center, zoom) {
-    map = L.map(containerId).setView(center, zoom);
+function init(containerId, center, zoom) {
+  map = L.map(containerId, {
+    worldCopyJump: false
+  }).setView(center, zoom);
 
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      maxZoom: 19
-    }).addTo(map);
+  map.setMaxBounds([
+    [-85, -180],
+    [85, 180]
+  ]);
+
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 19,
+    noWrap: true,
+    bounds: [
+      [-85, -180],
+      [85, 180]
+    ]
+  }).addTo(map);
+}
+
   }
 
   function onClick(cb) {
