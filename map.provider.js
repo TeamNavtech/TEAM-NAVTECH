@@ -1,6 +1,26 @@
 // map.provider.js
 const MapProvider = (() => {
   let map, userMarker, destMarker, routeLayer;
+  let dangerLayers = [];
+
+function drawDangerZones(zones) {
+  // clear old zones
+  dangerLayers.forEach(z => map.removeLayer(z));
+  dangerLayers = [];
+
+  zones.forEach(z => {
+    const circle = L.circle([z.lat, z.lng], {
+      radius: z.radius,
+      color: z.color,
+      fillColor: z.color,
+      fillOpacity: 0.3
+    }).addTo(map);
+
+    circle.bindPopup(`⚠ ${z.level} risk zone`);
+    dangerLayers.push(circle);
+  });
+}
+
 
   function init(containerId, center, zoom) {
     map = L.map(containerId).setView(center, zoom);
