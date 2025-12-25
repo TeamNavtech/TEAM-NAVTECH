@@ -2,234 +2,100 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Women Safety Risk Map</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./style.css">
 
-<style>
-:root{
-  --bg-0:#0a0f2b;
-  --bg-1:#11184a;
-  --bg-2:#1b1f63;
-  --accent:#7b61ff;
-  --accent-2:#9a4dff;
-  --text:#ffffff;
-  --muted:#cbd3ff;
-  --card:#121840;
-  --border:#2c3270;
-}
-
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:Inter,system-ui,sans-serif;
-  color:var(--text);
-  background:
-    radial-gradient(1200px 600px at 10% 10%, #171d52, transparent 60%),
-    linear-gradient(135deg,var(--bg-0),var(--bg-2));
-}
-
-.container{
-  max-width:1100px;
-  margin:auto;
-  padding:20px;
-}
-
-header{
-  position:sticky;
-  top:0;
-  backdrop-filter:blur(12px);
-  background:rgba(10,15,43,.85);
-  border-bottom:1px solid var(--border);
-}
-
-.nav{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  height:64px;
-}
-
-.brand{
-  font-weight:800;
-  letter-spacing:.4px;
-}
-
-.nav a{
-  color:var(--muted);
-  margin-left:16px;
-  text-decoration:none;
-}
-
-.hero{
-  padding:70px 0 40px;
-}
-
-.hero-grid{
-  display:grid;
-  grid-template-columns:1.1fr .9fr;
-  gap:30px;
-}
-
-.headline{
-  font-size:48px;
-  font-weight:800;
-  line-height:1.1;
-}
-
-.subhead{
-  color:var(--muted);
-  margin-top:10px;
-}
-
-.btn{
-  display:inline-block;
-  padding:12px 18px;
-  border-radius:12px;
-  background:#141a4c;
-  border:1px solid var(--border);
-  color:white;
-  cursor:pointer;
-}
-
-.btn-primary{
-  background:linear-gradient(135deg,var(--accent),var(--accent-2));
-  color:#0a0930;
-  font-weight:600;
-}
-
-.card{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:16px;
-  padding:20px;
-  margin-top:20px;
-}
-
-input{
-  width:100%;
-  padding:10px;
-  border-radius:10px;
-  border:1px solid var(--border);
-  background:#0f1440;
-  color:white;
-}
-
-#map{
-  height:260px;
-  border-radius:12px;
-  border:1px solid var(--border);
-  margin-top:10px;
-  display:grid;
-  place-items:center;
-  color:#9aa5ff;
-  font-size:14px;
-}
-
-.buttons{
-  display:flex;
-  gap:12px;
-  margin-top:14px;
-  flex-wrap:wrap;
-}
-
-#statusBox{
-  margin-top:12px;
-  padding:10px;
-  border-radius:10px;
-  background:#121840;
-  border:1px solid var(--border);
-  color:#cbd3ff;
-  font-size:13px;
-}
-
-.section{
-  padding:60px 0;
-}
-
-.footer{
-  text-align:center;
-  padding:30px;
-  border-top:1px solid var(--border);
-  color:#a9b3ff;
-}
-
-@media(max-width:900px){
-  .hero-grid{grid-template-columns:1fr}
-  .headline{font-size:36px}
-}
-</style>
+<!-- Leaflet (map stays same) -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 
 <body>
 
-<header>
-  <div class="container nav">
-    <div class="brand">TEAM NAVTECH</div>
-    <div>
-      <a href="#">Home</a>
-      <a href="#">Solution</a>
-      <a href="#">Impact</a>
+<header class="nav">
+  <div class="nav-inner">
+    <div class="brand">
+      <div class="logo">🛡️</div>
+      <div>
+        <b>TEAM NAVTECH</b>
+        <div class="tag">TECHSPRINT 2025</div>
+      </div>
     </div>
+
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">Problem</a>
+      <a href="#">Solution</a>
+      <a href="#">How it works</a>
+      <a href="#">Technology</a>
+      <a href="#">Impact</a>
+      <a href="#">Future scope</a>
+    </nav>
   </div>
 </header>
 
-<section class="hero container">
+<section class="hero">
   <div class="hero-grid">
 
+    <!-- LEFT -->
     <div>
-      <h1 class="headline">Predicting danger<br>before it happens</h1>
-      <p class="subhead">
-        AI-powered women safety alert & risk detection system.
+      <div class="pill">Predictive Women Safety Alert & Risk Detection System</div>
+
+      <h1>Predicting danger<br>before it happens</h1>
+
+      <p class="subtitle">
+        AI-powered women safety alert & risk detection system that warns
+        you before entering risk-prone areas.
       </p>
 
-      <div style="margin-top:18px">
-        <span class="btn btn-primary">View solution</span>
-        <span class="btn">How it works</span>
+      <div class="actions">
+        <button class="btn primary">✨ View solution</button>
+        <button class="btn ghost">→ How it works</button>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <span>MODE</span>
+          <b>Predictive alerts</b>
+        </div>
+        <div class="stat">
+          <span>RESPONSE</span>
+          <b>One-tap SOS</b>
+        </div>
+        <div class="stat">
+          <span>PRIVACY</span>
+          <b>Zero data access</b>
+        </div>
       </div>
     </div>
 
-    <!-- MAP UI CARD -->
-    <div class="card">
-      <h3>Live Risk Map</h3>
-      <p class="subhead" style="font-size:14px">
-        Real-time safety visualization (map logic connected separately)
-      </p>
+    <!-- RIGHT (MAP CARD) -->
+    <div class="map-card">
+      <h3>Live risk map</h3>
+      <p>Your route is analyzed in real time using location and incident patterns.</p>
 
-      <input disabled placeholder="Click on map to choose destination">
+      <input id="destination" disabled placeholder="Click on map to choose destination">
 
-      <!-- MAP PLACEHOLDER (LOGIC REMOVED) -->
-      <div id="map">
-        🌍 Map renders here
+      <!-- 🔴 MAP – DO NOT TOUCH -->
+      <div id="map"></div>
+
+      <div class="map-actions">
+        <button id="simulate">→ Simulate route</button>
+        <button id="share">＋ Share live location</button>
       </div>
 
-      <div class="buttons">
-        <button class="btn">Simulate route</button>
-        <button class="btn">Share live location</button>
-        <button class="btn btn-primary">🚨 One-click SOS</button>
-      </div>
+      <button id="sos" class="sos">🚨 One-click SOS</button>
 
-      <div id="statusBox">
-        Status messages will appear here
-      </div>
+      <div id="statusBox"></div>
     </div>
 
   </div>
 </section>
 
-<section class="section container">
-  <h2>Why this matters</h2>
-  <p class="subhead">
-    Women often face unsafe travel conditions at night or in isolated areas.
-    Our system predicts risk before exposure and guides users proactively.
-  </p>
-</section>
-
-<footer class="footer">
-  <b>Women Safety Risk Detection System</b><br>
-  Built by Team NAVTECH · Hackathon Demo
-</footer>
-
+<script src="./map.provider.js?v=5"></script>
+<script src="./app.js?v=5"></script>
 </body>
 </html>
