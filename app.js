@@ -3,7 +3,8 @@ let userPos = null;
 let destPos = null;
 
 // INIT MAP
-MapProvider.init("map", [22.5937, 78.9629], 5);
+MapProvider.init("map", [20, 0], 2); 
+
 
 // =====================
 // CRIME ZONES FUNCTION
