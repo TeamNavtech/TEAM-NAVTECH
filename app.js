@@ -30,96 +30,54 @@ let lastCrimeDraw = 0;
 
 window.addEventListener("DOMContentLoaded", () => {
 
-function showView(id) {
-  document.querySelectorAll(".content-view").forEach(v => {
-    v.classList.remove("active");
-  });
+  /* ================= VIEW SWITCHING ================= */
+  function showView(id) {
+    document.querySelectorAll(".content-view").forEach(v => {
+      v.classList.remove("active");
+    });
 
-  const target = document.getElementById(id);
-  if (target) target.classList.add("active");
+    const target = document.getElementById(id);
+    if (target) target.classList.add("active");
 
-  if (id === "safety-map-view") {
-    setTimeout(() => MapProvider.invalidate(), 300);
-  }
-}
-
-
-  setTimeout(() => {
-    window.dispatchEvent(new Event("resize"));
     if (id === "safety-map-view") {
-      MapProvider.invalidate();
+      setTimeout(() => MapProvider.invalidate(), 300);
     }
-  }, 300);
-}
-
-
-  const target = document.getElementById(id);
-  if (target) {
-    target.classList.add("active");
-    target.style.display = "block"; // 🔥 HARD SHOW
   }
 
-  setTimeout(() => {
-    window.dispatchEvent(new Event("resize"));
-    if (id === "safety-map-view") {
-      MapProvider.invalidate();
-    }
-  }, 300);
-}
+  /* ================= SOS ================= */
+  document.querySelector(".sos-float")
+    ?.addEventListener("click", () => showView("emergency-view"));
 
-
-  
-  const sosFloat = document.querySelector(".sos-float");
-  const emergencyCard = document.querySelector(".emergency-call");
-
-sosFloat?.addEventListener("click", () => {
-  showView("emergency-view");
-});
-
-emergencyCard?.addEventListener("click", () => {
-  showView("emergency-view");
-});
-
-  
-  /* 1️⃣ INIT MAP (ONCE) */
-  MapProvider.init("map", [26.7606, 83.3732], 13);
- 
+  document.querySelector(".emergency-call")
+    ?.addEventListener("click", () => showView("emergency-view"));
 
   document.getElementById("confirmSOS")
-  ?.addEventListener("click", startEmergency);
+    ?.addEventListener("click", startEmergency);
 
-document.getElementById("cancelSOS")
-  ?.addEventListener("click", () => {
-    cancelEmergency();
-    showView("welcome-view");
-  });
+  document.getElementById("cancelSOS")
+    ?.addEventListener("click", () => {
+      cancelEmergency();
+      showView("welcome-view");
+    });
 
-  /* 3️⃣ ACTION BUTTONS */
-  document.getElementById("btnSafety")?.onclick =
-    () => showView("safety-map-view");
+  /* ================= ACTION CARDS ================= */
+  document.getElementById("btnSafety")
+    ?.addEventListener("click", () => showView("safety-map-view"));
 
-  document.getElementById("btnRoute")?.onclick =
-    () => showView("route-view");
+  document.getElementById("btnRoute")
+    ?.addEventListener("click", () => showView("route-view"));
 
-  /* 4️⃣ SIMULATE BUTTON */
-  const simulate = document.getElementById("simulate");
+  /* ================= MAP INIT (ONCE) ================= */
+  MapProvider.init("map", [26.7606, 83.3732], 13);
 
-if (simulate) {
-  simulate.onclick = () => {
-    if (!previewDestination || !currentUserPos) return;
-    ...
-  };
-}
-
-
-  /* 5️⃣ FIREBASE CRIME ZONES */
+  /* ================= FIREBASE CRIME ZONES ================= */
   const crimeZonesRef = collection(db, "crimeZones");
   onSnapshot(crimeZonesRef, snap => {
     cachedCrimeZones = snap.docs.map(d => d.data());
-    console.log("✅ crime zones loaded:", cachedCrimeZones.length);
+    console.log("✅ Crime zones loaded:", cachedCrimeZones.length);
   });
 
-  /* 6️⃣ GPS TRACKING */
+  /* ================= GPS TRACKING ================= */
   navigator.geolocation.watchPosition(
     pos => {
       currentUserPos = {
@@ -139,37 +97,15 @@ if (simulate) {
     { enableHighAccuracy: true }
   );
 
-  /* 7️⃣ MAP CLICK */
+  /* ================= MAP CLICK ================= */
   MapProvider.onClick(pos => {
     previewDestination = pos;
     MapProvider.previewDestination(pos);
   });
 
-  /* 8️⃣ SIMULATE ROUTE */
-  simulate.onclick = () => {
-    if (!previewDestination || !currentUserPos) return;
-
-    fetch(
-      `https://router.project-osrm.org/route/v1/walking/` +
-      `${currentUserPos.lng},${currentUserPos.lat};` +
-      `${previewDestination.lng},${previewDestination.lat}` +
-      `?overview=full&geometries=geojson`
-    )
-      .then(r => r.json())
-      .then(d => {
-        if (!d.routes?.length) return;
-
-        const points = d.routes[0].geometry.coordinates
-          .map(c => [c[1], c[0]]);
-
-        MapProvider.drawRoute(points);
-        MapProvider.confirmDestination(previewDestination);
-      });
-  };
-
 });
 
-/* ===== FILTER ===== */
+/* ================= CRIME ZONE FILTER ================= */
 function drawNearbyCrimeZones() {
   if (!currentUserPos) return;
 
@@ -183,7 +119,7 @@ function drawNearbyCrimeZones() {
   MapProvider.drawCrimeZones(nearby);
 }
 
-/* ===== DISTANCE ===== */
+/* ================= DISTANCE (HAVERSINE) ================= */
 function distanceInMeters(a, b) {
   const R = 6371000;
   const dLat = (b.lat - a.lat) * Math.PI / 180;
