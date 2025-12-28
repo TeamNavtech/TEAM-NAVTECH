@@ -1,106 +1,124 @@
-const statusBox = document.getElementById("statusBox");
-let userPos = null;
-let destPos = null;
+import { initializeApp } from
+  "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
 
-// INIT MAP
-// Change the zoom from 5 to 13 in app.js
-MapProvider.init("map", [22.5937, 78.9629], 13);
+import {
+  getFirestore,
+  collection,
+  onSnapshot
+} from
+  "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 
+import { MapProvider } from "./map.provider.js";
 
-// =====================
-// CRIME ZONES FUNCTION
-// =====================
-function generateCrimeZones(center, count = 4) {
-  const zones = [];
-  const levels = [
-    { level: "High", color: "#ff4d6d", radius: 500 },
-    { level: "Medium", color: "#ffd166", radius: 700 },
-    { level: "Low", color: "#4dd599", radius: 900 }
-  ];
+/* ===== FIREBASE ===== */
+const firebaseConfig = {
+  apiKey: "AIzaSyCt31BARLXsFKuNcQmSDupaAwNH0MV5MRI",
+  authDomain: "women-safety-prototype-ea8c1.firebaseapp.com",
+  projectId: "women-safety-prototype-ea8c1"
+};
 
-  for (let i = 0; i < count; i++) {
-    const l = levels[Math.floor(Math.random() * levels.length)];
-    zones.push({
-      lat: center.lat + (Math.random() - 0.5) * 0.02,
-      lng: center.lng + (Math.random() - 0.5) * 0.02,
-      level: l.level,
-      color: l.color,
-      radius: l.radius
-    });
-  }
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-  return zones;
+/* ===== STATE ===== */
+let currentUserPos = null;
+let previewDestination = null;
+let currentDestination = null;
+let gpsWatchId = null;
+let cachedCrimeZones = [];
+let lastCrimeDraw = 0;
+
+/* ===== START ===== */
+window.addEventListener("DOMContentLoaded", () => {
+
+  const simulate = document.getElementById("simulate");
+  if (!simulate) return;
+
+  MapProvider.init("map", [26.7606, 83.3732], 13);
+
+  const crimeZonesRef = collection(db, "crimeZones");
+
+  onSnapshot(crimeZonesRef, snap => {
+    cachedCrimeZones = snap.docs.map(d => d.data());
+    console.log("✅ crime zones loaded:", cachedCrimeZones.length);
+  });
+
+  /* ===== GPS (LIVE) ===== */
+  gpsWatchId = navigator.geolocation.watchPosition(
+    pos => {
+      currentUserPos = {
+        lat: pos.coords.latitude,
+        lng: pos.coords.longitude
+      };
+
+      MapProvider.setUser(currentUserPos);
+
+      const now = Date.now();
+      if (now - lastCrimeDraw > 2000) {
+        drawNearbyCrimeZones();
+        lastCrimeDraw = now;
+      }
+    },
+    err => console.error("GPS error:", err),
+    { enableHighAccuracy: true }
+  );
+
+  /* ===== MAP CLICK ===== */
+  MapProvider.onClick(pos => {
+    previewDestination = pos;
+    MapProvider.previewDestination(pos);
+  });
+
+  /* ===== SIMULATE ROUTE ===== */
+  simulate.onclick = () => {
+    if (!previewDestination || !currentUserPos) return;
+
+    fetch(
+      `https://router.project-osrm.org/route/v1/walking/` +
+      `${currentUserPos.lng},${currentUserPos.lat};` +
+      `${previewDestination.lng},${previewDestination.lat}` +
+      `?overview=full&geometries=geojson`
+    )
+      .then(r => r.json())
+      .then(d => {
+        if (!d.routes?.length) return;
+
+        const points = d.routes[0].geometry.coordinates
+          .map(c => [c[1], c[0]]);
+
+        MapProvider.drawRoute(points);
+        MapProvider.confirmDestination(previewDestination);
+      });
+  };
+
+}); // ✅ DOMContentLoaded ENDS HERE
+
+/* ===== FILTER ===== */
+function drawNearbyCrimeZones() {
+  if (!currentUserPos) return;
+
+  const nearby = cachedCrimeZones.filter(z =>
+    distanceInMeters(currentUserPos, {
+      lat: z.lat,
+      lng: z.lng
+    }) <= 5000
+  );
+
+  MapProvider.drawCrimeZones(nearby);
 }
 
-// =====================
-// GPS (THIS WAS NOT RUNNING BEFORE)
-// =====================
-navigator.geolocation.watchPosition(
-  p => {
-    userPos = {
-      lat: p.coords.latitude,
-      lng: p.coords.longitude
-    };
+/* ===== DISTANCE ===== */
+function distanceInMeters(a, b) {
+  const R = 6371000;
+  const dLat = (b.lat - a.lat) * Math.PI / 180;
+  const dLng = (b.lng - a.lng) * Math.PI / 180;
 
-    MapProvider.setUserLocation(userPos);
+  const lat1 = a.lat * Math.PI / 180;
+  const lat2 = b.lat * Math.PI / 180;
 
-    const crimeZones = generateCrimeZones(userPos);
-    MapProvider.drawDangerZones(crimeZones);
-  },
-  err => {
-    console.error(err);
-    statusBox.innerHTML = "❌ GPS permission denied";
-  },
-  { enableHighAccuracy: true }
-);
+  const h =
+    Math.sin(dLat / 2) ** 2 +
+    Math.sin(dLng / 2) ** 2 * Math.cos(lat1) * Math.cos(lat2);
 
-// =====================
-// MAP CLICK
-// =====================
-MapProvider.onClick(pos => {
-  destPos = pos;
-  MapProvider.setDestination(pos);
-
-  document.getElementById("destination").value =
-    `${pos.lat.toFixed(5)}, ${pos.lng.toFixed(5)}`;
-
-  statusBox.innerHTML = "📍 Destination selected";
-});
-
-// =====================
-// SIMULATE ROUTE
-// =====================
-simulate.onclick = () => {
-  if (!userPos || !destPos) return;
-
-  fetch(
-    `https://router.project-osrm.org/route/v1/walking/` +
-    `${userPos.lng},${userPos.lat};${destPos.lng},${destPos.lat}` +
-    `?overview=full&geometries=geojson`
-  )
-    .then(r => r.json())
-    .then(d => {
-      const pts = d.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
-      MapProvider.drawRoute(pts);
-      statusBox.innerHTML = "🧠 Route simulated";
-    });
-};
-
-// =====================
-// SHARE
-// =====================
-share.onclick = () => {
-  if (!userPos) return;
-  statusBox.innerHTML =
-    `📡 Live location shared<br>${userPos.lat}, ${userPos.lng}`;
-};
-
-
-// SOS
-sos.onclick = () => {
-  if (!userPos) return;
-  statusBox.innerHTML =
-    `🚨 SOS ACTIVATED<br>${userPos.lat}, ${userPos.lng}`;
-  document.body.style.animation = "sosFlash 1s infinite";
-  setTimeout(() => document.body.style.animation = "", 8000);
-};
+  return 2 * R * Math.asin(Math.sqrt(h));
+}
