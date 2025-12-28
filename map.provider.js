@@ -6,7 +6,6 @@ export const MapProvider = (() => {
   let dangerLayers = [];
   let routeLayer = null; // ✅ MISSING VARIABLE (CRITICAL FIX)
   let hasCenteredOnUser = false;
-  let crimeLayer=null;
 
   // ===== ICONS =====
   const blueIcon = L.icon({
