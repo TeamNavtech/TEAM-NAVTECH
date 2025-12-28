@@ -23,7 +23,6 @@ const db = getFirestore(app);
 /* ===== STATE ===== */
 let currentUserPos = null;
 let previewDestination = null;
-let currentDestination = null;
 let gpsWatchId = null;
 let cachedCrimeZones = [];
 let lastCrimeDraw = 0;
@@ -31,41 +30,45 @@ let lastCrimeDraw = 0;
 /* ===== START ===== */
 window.addEventListener("DOMContentLoaded", () => {
 
-  const simulate = document.getElementById("simulate");
-  if (!simulate) return;
-function showView(id) {
-  document
-    .querySelectorAll(".content-view")
-    .forEach(v => v.classList.remove("active"));
-
-  document.getElementById(id).classList.add("active");
-
-  // Fix Leaflet size when map becomes visible
-  setTimeout(() => {
-    window.dispatchEvent(new Event("resize"));
-  }, 300);
-}
-
-document.getElementById("btnSafety").onclick = () =>
-  showView("safety-map-view");
-
-document.getElementById("btnRoute").onclick = () =>
-  showView("route-view");
-
-document.getElementById("btnEmergency").onclick = () =>
-  showView("emergency-view");
-
+  /* 1️⃣ INIT MAP (ONCE) */
   MapProvider.init("map", [26.7606, 83.3732], 13);
 
-  const crimeZonesRef = collection(db, "crimeZones");
+  /* 2️⃣ VIEW SWITCHER */
+  function showView(id) {
+    document
+      .querySelectorAll(".content-view")
+      .forEach(v => v.classList.remove("active"));
 
+    document.getElementById(id)?.classList.add("active");
+
+    setTimeout(() => {
+      window.dispatchEvent(new Event("resize"));
+    }, 300);
+  }
+
+  /* 3️⃣ ACTION BUTTONS */
+  document.getElementById("btnSafety")?.onclick =
+    () => showView("safety-map-view");
+
+  document.getElementById("btnRoute")?.onclick =
+    () => showView("route-view");
+
+  document.getElementById("btnEmergency")?.onclick =
+    () => showView("emergency-view");
+
+  /* 4️⃣ SIMULATE BUTTON */
+  const simulate = document.getElementById("simulate");
+  if (!simulate) return;
+
+  /* 5️⃣ FIREBASE CRIME ZONES */
+  const crimeZonesRef = collection(db, "crimeZones");
   onSnapshot(crimeZonesRef, snap => {
     cachedCrimeZones = snap.docs.map(d => d.data());
     console.log("✅ crime zones loaded:", cachedCrimeZones.length);
   });
 
-  /* ===== GPS (LIVE) ===== */
-  gpsWatchId = navigator.geolocation.watchPosition(
+  /* 6️⃣ GPS TRACKING */
+  navigator.geolocation.watchPosition(
     pos => {
       currentUserPos = {
         lat: pos.coords.latitude,
@@ -84,13 +87,13 @@ document.getElementById("btnEmergency").onclick = () =>
     { enableHighAccuracy: true }
   );
 
-  /* ===== MAP CLICK ===== */
+  /* 7️⃣ MAP CLICK */
   MapProvider.onClick(pos => {
     previewDestination = pos;
     MapProvider.previewDestination(pos);
   });
 
-  /* ===== SIMULATE ROUTE ===== */
+  /* 8️⃣ SIMULATE ROUTE */
   simulate.onclick = () => {
     if (!previewDestination || !currentUserPos) return;
 
@@ -112,7 +115,7 @@ document.getElementById("btnEmergency").onclick = () =>
       });
   };
 
-}); // ✅ DOMContentLoaded ENDS HERE
+});
 
 /* ===== FILTER ===== */
 function drawNearbyCrimeZones() {
