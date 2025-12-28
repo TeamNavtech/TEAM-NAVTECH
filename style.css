@@ -34,7 +34,7 @@ body {
 }
 
 .content-view.active {
-  display: flex;
+  display: block;
   flex-direction: column;
   height: 100%;
 }
