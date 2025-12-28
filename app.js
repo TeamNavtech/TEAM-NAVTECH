@@ -31,21 +31,25 @@ let lastCrimeDraw = 0;
 window.addEventListener("DOMContentLoaded", () => {
 
 function showView(id) {
-  document
-    .querySelectorAll(".content-view")
-    .forEach(v => v.classList.remove("active"));
+  document.querySelectorAll(".content-view").forEach(v => {
+    v.classList.remove("active");
+    v.style.display = "none";   // 🔥 HARD HIDE
+  });
 
-  document.getElementById(id)?.classList.add("active");
+  const target = document.getElementById(id);
+  if (target) {
+    target.classList.add("active");
+    target.style.display = "block"; // 🔥 HARD SHOW
+  }
 
   setTimeout(() => {
     window.dispatchEvent(new Event("resize"));
-
-    // 🔥 FIX: force Leaflet to recalculate size
     if (id === "safety-map-view") {
-      MapProvider.invalidate(); 
+      MapProvider.invalidate();
     }
   }, 300);
 }
+
 
   
   const sosFloat = document.querySelector(".sos-float");
