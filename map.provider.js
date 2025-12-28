@@ -86,6 +86,12 @@ export const MapProvider = (() => {
       previewMarker = null;
     }
 
+    function invalidate() {
+  if (map) {
+    map.invalidateSize();
+  }
+}
+
     if (!finalMarker) {
       finalMarker = L.marker([pos.lat, pos.lng], { icon: redIcon }).addTo(map);
     } else {
@@ -150,6 +156,7 @@ function drawCrimeZones(zones = []) {
     previewDestination,
     confirmDestination,
     drawCrimeZones,
-    drawRoute
+    drawRoute,
+    invalidate
   };
 })();
