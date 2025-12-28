@@ -11,6 +11,36 @@ body {
   color: #1f2937;
   height: 100vh;
 }
+.content-frame {
+  margin-top: 25px;
+  background: #fff;
+  padding: 16px;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.content-view {
+  display: none;
+}
+
+.content-view.active {
+  display: block;
+}
+
+#map {
+  height: 420px;
+  width: 100%;
+  border-radius: 14px;
+}
+
+/* Map buttons */
+.map-controls {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  display: flex;
+  gap: 10px;
+}
 
 /* SIDEBAR */
 .sidebar {
