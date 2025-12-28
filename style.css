@@ -17,6 +17,10 @@ body {
   padding: 16px;
   border-radius: 18px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .content-view {
@@ -84,6 +88,9 @@ body {
   flex: 1;
   padding: 30px;
   overflow-y: auto;
+
+  display: flex;
+  flex-direction: column;
 }
 
 /* HEADER */
@@ -184,12 +191,12 @@ body {
   height: 420px;
   margin-top: 10px;
   border-radius: 16px;
-}
-/* =========================
-   ORANGE HOVER EFFECTS
-   ========================= */
 
-/* Quick action cards hover */
+  flex: 1;
+  min-height:300px;
+}
+
+
 .card:hover {
   background: #f97316;            /* ORANGE */
   color: #ffffff;
