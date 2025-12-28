@@ -1,5 +1,6 @@
 import { initializeApp } from
   "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+import { startEmergency } from "./sos.js";
 
 import {
   getFirestore,
@@ -27,8 +28,15 @@ let gpsWatchId = null;
 let cachedCrimeZones = [];
 let lastCrimeDraw = 0;
 
-/* ===== START ===== */
 window.addEventListener("DOMContentLoaded", () => {
+
+  const sosFloat = document.querySelector(".sos-float");
+  const emergencyCard = document.querySelector(".emergency-call");
+  const mapSOS = document.getElementById("sos");
+
+  sosFloat?.addEventListener("click", startEmergency);
+  emergencyCard?.addEventListener("click", startEmergency);
+  mapSOS?.addEventListener("click", startEmergency);
 
   /* 1️⃣ INIT MAP (ONCE) */
   MapProvider.init("map", [26.7606, 83.3732], 13);
