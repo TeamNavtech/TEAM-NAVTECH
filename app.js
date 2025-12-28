@@ -31,17 +31,23 @@ let lastCrimeDraw = 0;
 
 window.addEventListener("DOMContentLoaded", () => {
 
- function showView(id) {
-    document
-      .querySelectorAll(".content-view")
-      .forEach(v => v.classList.remove("active"));
+function showView(id) {
+  document
+    .querySelectorAll(".content-view")
+    .forEach(v => v.classList.remove("active"));
 
-    document.getElementById(id)?.classList.add("active");
+  document.getElementById(id)?.classList.add("active");
 
-    setTimeout(() => {
-      window.dispatchEvent(new Event("resize"));
-    }, 300);
-  }
+  setTimeout(() => {
+    window.dispatchEvent(new Event("resize"));
+
+    // 🔥 FIX: force Leaflet to recalculate size
+    if (id === "safety-map-view") {
+      MapProvider.invalidate(); 
+    }
+  }, 300);
+}
+
   
   const sosFloat = document.querySelector(".sos-float");
   const emergencyCard = document.querySelector(".emergency-call");
