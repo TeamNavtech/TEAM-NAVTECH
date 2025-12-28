@@ -25,7 +25,6 @@ const db = getFirestore(app);
 /* ===== STATE ===== */
 let currentUserPos = null;
 let previewDestination = null;
-let gpsWatchId = null;
 let cachedCrimeZones = [];
 let lastCrimeDraw = 0;
 
