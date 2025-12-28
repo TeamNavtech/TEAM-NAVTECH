@@ -65,4 +65,85 @@ button.primary{
   0%{background:#0a0f2b}
   50%{background:#2b1320}
   100%{background:#0a0f2b}
+  
+}
+/* STATUS PANEL (NEW) */
+.status-panel {
+  background: #11184a;
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+/* NEW BUTTON COLORS */
+#checkRisk {
+  background: #4ddde0;
+  color: #003049;
+}
+
+#safeRoute {
+  background: #80ed99;
+  color: #003049;
+}
+
+#checkRisk:hover,
+#safeRoute:hover {
+  opacity: 0.85;
+}
+
+/* STATUS PANEL (NEW) */
+.status-panel {
+  background: #11184a;
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+/* NEW BUTTON COLORS */
+#checkRisk {
+  background: #4ddde0;
+  color: #003049;
+}
+
+#safeRoute {
+  background: #80ed99;
+  color: #003049;
+}
+
+#checkRisk:hover,
+#safeRoute:hover {
+  opacity: 0.85;
+}
+
+/* STATUS PANEL (NEW) */
+.status-panel {
+  background: #11184a;
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+/* NEW BUTTON COLORS */
+#checkRisk {
+  background: #4ddde0;
+  color: #003049;
+}
+
+#safeRoute {
+  background: #80ed99;
+  color: #003049;
+}
+
+#checkRisk:hover,
+#safeRoute:hover {
+  opacity: 0.85;
+}
+
+/* MAP BORDER ENHANCEMENT */
+#map {
+  border: 2px solid #4ddde0;
+  border-radius: 12px;
 }
