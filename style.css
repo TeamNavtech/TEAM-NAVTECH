@@ -230,44 +230,7 @@ body {
   background: #f97316;
   color: white;
 }
-/* SOS POPUP */
-.sos-modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
 
-.sos-box {
-  background: white;
-  padding: 30px;
-  border-radius: 16px;
-  width: 300px;
-  text-align: center;
-}
-
-.sos-box h2 {
-  color: #dc2626;
-}
-
-.sos-timer {
-  font-size: 42px;
-  color: #f97316;
-  font-weight: bold;
-  margin: 15px 0;
-}
-
-.sos-box button {
-  background: #16a34a;
-  border: none;
-  padding: 10px 18px;
-  color: white;
-  border-radius: 8px;
-  cursor: pointer;
-}
 
 
 
