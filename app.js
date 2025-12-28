@@ -1,6 +1,7 @@
 import { initializeApp } from
   "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
-import { startEmergency } from "./sos.js";
+
+import { startEmergency, cancelEmergency } from "./sos.js";
 
 import {
   getFirestore,
@@ -30,19 +31,7 @@ let lastCrimeDraw = 0;
 
 window.addEventListener("DOMContentLoaded", () => {
 
-  const sosFloat = document.querySelector(".sos-float");
-  const emergencyCard = document.querySelector(".emergency-call");
-  const mapSOS = document.getElementById("sos");
-
-  sosFloat?.addEventListener("click", startEmergency);
-  emergencyCard?.addEventListener("click", startEmergency);
-  mapSOS?.addEventListener("click", startEmergency);
-
-  /* 1️⃣ INIT MAP (ONCE) */
-  MapProvider.init("map", [26.7606, 83.3732], 13);
-
-  /* 2️⃣ VIEW SWITCHER */
-  function showView(id) {
+ function showView(id) {
     document
       .querySelectorAll(".content-view")
       .forEach(v => v.classList.remove("active"));
@@ -53,6 +42,36 @@ window.addEventListener("DOMContentLoaded", () => {
       window.dispatchEvent(new Event("resize"));
     }, 300);
   }
+  
+  const sosFloat = document.querySelector(".sos-float");
+  const emergencyCard = document.querySelector(".emergency-call");
+  const mapSOS = document.getElementById("sos");
+
+sosFloat?.addEventListener("click", () => {
+  showView("emergency-view");
+});
+
+emergencyCard?.addEventListener("click", () => {
+  showView("emergency-view");
+});
+
+mapSOS?.addEventListener("click", () => {
+  showView("emergency-view");
+});
+
+  
+  /* 1️⃣ INIT MAP (ONCE) */
+  MapProvider.init("map", [26.7606, 83.3732], 13);
+ 
+
+  document.getElementById("confirmSOS")
+  ?.addEventListener("click", startEmergency);
+
+document.getElementById("cancelSOS")
+  ?.addEventListener("click", () => {
+    cancelEmergency();
+    showView("welcome-view");
+  });
 
   /* 3️⃣ ACTION BUTTONS */
   document.getElementById("btnSafety")?.onclick =
@@ -60,9 +79,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
   document.getElementById("btnRoute")?.onclick =
     () => showView("route-view");
-
-  document.getElementById("btnEmergency")?.onclick =
-    () => showView("emergency-view");
 
   /* 4️⃣ SIMULATE BUTTON */
   const simulate = document.getElementById("simulate");
