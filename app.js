@@ -102,3 +102,37 @@ sos.onclick = () => {
   document.body.style.animation = "sosFlash 1s infinite";
   setTimeout(() => document.body.style.animation = "", 8000);
 };
+// AREA RISK SIMULATION
+const riskLevels = ["Low", "Medium", "High"];
+
+document.getElementById("checkRisk").onclick = () => {
+  const risk = riskLevels[Math.floor(Math.random() * riskLevels.length)];
+  const riskText = document.getElementById("riskStatus");
+
+  riskText.innerText = `Area Risk: ${risk}`;
+
+  if (risk === "High") {
+    riskText.style.color = "#ff4d6d";
+    alert("⚠️ High Risk Area detected. Safer routes recommended.");
+  } else {
+    riskText.style.color = "#80ed99";
+  }
+};
+
+// SAFER ROUTE BUTTON
+document.getElementById("safeRoute").onclick = () => {
+  alert("✅ Showing safer alternative routes & operated safe spots.");
+};
+
+// SOS AUTO-ESCALATION TIMER
+document.getElementById("sos").onclick = () => {
+  document.getElementById("timerStatus").innerText =
+    "Emergency Timer: Waiting for response (5 minutes)";
+
+  setTimeout(() => {
+    alert("🚔 Alert sent to nearest police station / patrol vehicle.");
+    document.getElementById("timerStatus").innerText =
+      "Emergency Timer: Police Alert Triggered";
+  }, 300000);
+};
+
