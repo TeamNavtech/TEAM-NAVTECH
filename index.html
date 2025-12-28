@@ -46,8 +46,7 @@
       <h1>Good evening, Sarah</h1>
       <p>Stay safe, we're watching over you</p>
     </div>
- <button class="sos-float" onclick="startEmergency()">⚠</button>
-
+ <button class="sos-float">⚠</button>
   </header>
 
   <!-- STATUS CARD -->
@@ -68,7 +67,7 @@
     <div class="card" id="btnRoute">📍<br><strong>Plan Route</strong></div>
     <div class="card" id="btnSafety">🗺️<br><strong>Safety Map</strong></div>
     <div class="card">👥<br><strong>Share Location</strong></div>
-  <div class="card danger emergency-call" onclick="startEmergency()">
+  <div class="card danger emergency-call">
   🚨<br>
   <strong>Emergency</strong>
   <p>Tap to activate SOS</p>
@@ -101,9 +100,20 @@
 
   <!-- EMERGENCY VIEW -->
   <div id="emergency-view" class="content-view hidden">
-    <h3>Emergency</h3>
-    <p>Emergency actions will appear here.</p>
+  <h2>🚨 Emergency</h2>
+
+  <p>
+    Sending alert in
+    <strong><span id="sosTime">5</span></strong>
+    seconds
+  </p>
+
+  <div style="margin-top:16px">
+    <button id="confirmSOS">Confirm SOS</button>
+    <button id="cancelSOS">Cancel</button>
   </div>
+</div>
+
 
 </section>
 
