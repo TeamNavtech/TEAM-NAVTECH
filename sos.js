@@ -1,8 +1,8 @@
 // sos.js
 const PRIMARY_NUMBER = "+919264960831";
 const EMERGENCY_CONTACTS = [
-  "+919264960831",
-  "+919569818546"
+  "+91abcd960831",
+  "+9195vxyz8546"
 ];
 
 let countdown;
@@ -12,8 +12,7 @@ let sosActive = false;
 export function startEmergency() {
   if (sosActive) return;
   sosActive = true;
-
-  showSOSModal();
+  
   timeLeft = 5;
 
   countdown = setInterval(() => {
@@ -27,32 +26,13 @@ export function startEmergency() {
     }
   }, 1000);
 }
-
-function cancelSOS() {
+export function cancelEmergency() {
   clearInterval(countdown);
   sosActive = false;
-  document.getElementById("sosModal")?.remove();
-}
-
-function showSOSModal() {
-  const modal = document.createElement("div");
-  modal.className = "sos-modal";
-  modal.id = "sosModal";
-  modal.innerHTML = `
-    <div class="sos-box">
-      <h2>🚨 Emergency Alert</h2>
-      <p>Calling & alerting contacts in</p>
-      <div class="sos-timer" id="sosTime">5</div>
-      <button id="cancelSOS">Cancel</button>
-    </div>
-  `;
-  document.body.appendChild(modal);
-
-  document.getElementById("cancelSOS").onclick = cancelSOS;
 }
 
 function triggerEmergency() {
-  cancelSOS();
+  sosActive=false;
 
   navigator.geolocation.getCurrentPosition(
     pos => {
