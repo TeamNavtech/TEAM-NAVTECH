@@ -261,48 +261,4 @@ body {
   border-radius: 8px;
   cursor: pointer;
 }
-/* =========================
-   ADD-ONLY: WARM WELCOME BOX
-   ========================= */
-
-.welcome-guide {
-  margin-top: 30px;
-  padding: 30px;               /* div bada */
-  background: #fff7ed;         /* warm & safe feel */
-  border-radius: 20px;
-  box-shadow: 0 12px 30px rgba(249,115,22,0.15);
-}
-
-.welcome-guide h2 {
-  font-size: 24px;
-  color: #f97316;
-  margin-bottom: 12px;
-}
-
-.welcome-text {
-  font-size: 15px;
-  color: #374151;
-  line-height: 1.7;
-  margin-bottom: 18px;
-}
-
-.guide-points {
-  list-style: none;
-  margin-bottom: 18px;
-}
-
-.guide-points li {
-  font-size: 14px;
-  margin: 8px 0;
-  color: #1f2937;
-}
-
-.safe-note {
-  font-size: 14px;
-  color: #16a34a;
-  font-weight: 600;
-}
-
-
-
 
