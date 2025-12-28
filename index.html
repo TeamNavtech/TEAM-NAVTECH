@@ -1,101 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Women Safety Risk Map</title>
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Women Safety Risk Map</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="./style.css">
-
-<!-- Leaflet (map stays same) -->
+<!-- Leaflet (FREE map engine) -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<!-- App styles -->
+<link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
+<div class="container">
 
-<header class="nav">
-  <div class="nav-inner">
-    <div class="brand">
-      <div class="logo">🛡️</div>
-      <div>
-        <b>TEAM NAVTECH</b>
-        <div class="tag">TECHSPRINT 2025</div>
-      </div>
-    </div>
+  <input id="destination" disabled placeholder="Click on map to choose destination">
 
-    <nav>
-      <a href="#">Home</a>
-      <a href="#">Problem</a>
-      <a href="#">Solution</a>
-      <a href="#">How it works</a>
-      <a href="#">Technology</a>
-      <a href="#">Impact</a>
-      <a href="#">Future scope</a>
-    </nav>
-  </div>
-</header>
+  <div id="map"></div>
 
-<section class="hero">
-  <div class="hero-grid">
+  
+  <div class="controls">
+  <button id="simulate">Confirm Destination</button>
 
-    <!-- LEFT -->
-    <div>
-      <div class="pill">Predictive Women Safety Alert & Risk Detection System</div>
+  <!-- ADDED -->
+  <button id="checkRisk">Check Area Safety</button>
+  <button id="safeRoute">Find Safer Route</button>
 
-      <h1>Predicting danger<br>before it happens</h1>
+  <button id="sos">🚨 SOS</button>
+</div>
 
-      <p class="subtitle">
-        AI-powered women safety alert & risk detection system that warns
-        you before entering risk-prone areas.
-      </p>
+<!-- ADDED BELOW CONTROLS -->
+<div class="status-panel">
+  <p id="riskStatus">Area Risk: Not Checked</p>
+  <p id="timerStatus">Emergency Timer: Inactive</p>
+</div>
 
-      <div class="actions">
-        <button class="btn primary">✨ View solution</button>
-        <button class="btn ghost">→ How it works</button>
-      </div>
 
-      <div class="stats">
-        <div class="stat">
-          <span>MODE</span>
-          <b>Predictive alerts</b>
-        </div>
-        <div class="stat">
-          <span>RESPONSE</span>
-          <b>One-tap SOS</b>
-        </div>
-        <div class="stat">
-          <span>PRIVACY</span>
-          <b>Zero data access</b>
-        </div>
-      </div>
-    </div>
+  <div id="statusBox"></div>
 
-    <!-- RIGHT (MAP CARD) -->
-    <div class="map-card">
-      <h3>Live risk map</h3>
-      <p>Your route is analyzed in real time using location and incident patterns.</p>
+</div>
 
-      <input id="destination" disabled placeholder="Click on map to choose destination">
-
-      <!-- 🔴 MAP – DO NOT TOUCH -->
-      <div id="map"></div>
-
-      <div class="map-actions">
-        <button id="simulate">→ Simulate route</button>
-        <button id="share">＋ Share live location</button>
-      </div>
-
-      <button id="sos" class="sos">🚨 One-click SOS</button>
-
-      <div id="statusBox"></div>
-    </div>
-
-  </div>
-</section>
-
-<script src="./map.provider.js?v=5"></script>
-<script src="./app.js?v=5"></script>
+<script src="./map.provider.js"></script>
+<script src="./app.js"></script>
 </body>
 </html>
