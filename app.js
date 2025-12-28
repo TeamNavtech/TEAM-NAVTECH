@@ -33,8 +33,21 @@ window.addEventListener("DOMContentLoaded", () => {
 function showView(id) {
   document.querySelectorAll(".content-view").forEach(v => {
     v.classList.remove("active");
-    v.style.display = "none";   // 🔥 HARD HIDE
   });
+
+  const target = document.getElementById(id);
+  if (target) {
+    target.classList.add("active");
+  }
+
+  setTimeout(() => {
+    window.dispatchEvent(new Event("resize"));
+    if (id === "safety-map-view") {
+      MapProvider.invalidate();
+    }
+  }, 300);
+}
+
 
   const target = document.getElementById(id);
   if (target) {
@@ -91,7 +104,14 @@ document.getElementById("cancelSOS")
 
   /* 4️⃣ SIMULATE BUTTON */
   const simulate = document.getElementById("simulate");
-  if (!simulate) return;
+
+if (simulate) {
+  simulate.onclick = () => {
+    if (!previewDestination || !currentUserPos) return;
+    ...
+  };
+}
+
 
   /* 5️⃣ FIREBASE CRIME ZONES */
   const crimeZonesRef = collection(db, "crimeZones");
