@@ -36,9 +36,13 @@ function showView(id) {
   });
 
   const target = document.getElementById(id);
-  if (target) {
-    target.classList.add("active");
+  if (target) target.classList.add("active");
+
+  if (id === "safety-map-view") {
+    setTimeout(() => MapProvider.invalidate(), 300);
   }
+}
+
 
   setTimeout(() => {
     window.dispatchEvent(new Event("resize"));
