@@ -64,11 +64,38 @@
 
   <!-- QUICK ACTIONS -->
   <section class="actions">
-    <div class="card">📍<br><strong>Plan Route</strong><p>Find safest path</p></div>
-    <div class="card">🗺️<br><strong>Safety Map</strong><p>View risk zones</p></div>
-    <div class="card">👥<br><strong>Share Location</strong><p>Not sharing</p></div>
-    <div class="card danger">🚨<br><strong>Emergency</strong><p>Quick access</p></div>
+    <div class="card" id="btnRoute">📍<br><strong>Plan Route</strong></div>
+    <div class="card" id="btnSafety">🗺️<br><strong>Safety Map</strong></div>
+    <div class="card">👥<br><strong>Share Location</strong></div>
+    <div class="card danger" id="btnEmergency">🚨<br><strong>Emergency</strong></div>
   </section>
+  <!-- CONTENT FRAME (loads map / other views here) -->
+<section class="content-frame">
+
+  <!-- SAFETY MAP VIEW -->
+  <div id="safety-map-view" class="content-view">
+    <div id="map"></div>
+
+    <div class="map-controls">
+      <button id="simulate">Confirm Destination</button>
+      <button id="sos">🚨 SOS</button>
+    </div>
+  </div>
+
+  <!-- ROUTE PLANNER VIEW -->
+  <div id="route-view" class="content-view hidden">
+    <h3>Route Planner</h3>
+    <p>Select a destination to plan the safest route.</p>
+  </div>
+
+  <!-- EMERGENCY VIEW -->
+  <div id="emergency-view" class="content-view hidden">
+    <h3>Emergency</h3>
+    <p>Emergency actions will appear here.</p>
+  </div>
+
+</section>
+
 
   <!-- MAP -->
   <section class="map-section">
