@@ -31,12 +31,6 @@ body {
   display: block;
 }
 
-#map {
-  height: 420px;
-  width: 100%;
-  border-radius: 14px;
-}
-
 /* Map buttons */
 .map-controls {
   position: absolute;
