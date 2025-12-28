@@ -33,6 +33,27 @@ window.addEventListener("DOMContentLoaded", () => {
 
   const simulate = document.getElementById("simulate");
   if (!simulate) return;
+function showView(id) {
+  document
+    .querySelectorAll(".content-view")
+    .forEach(v => v.classList.remove("active"));
+
+  document.getElementById(id).classList.add("active");
+
+  // Fix Leaflet size when map becomes visible
+  setTimeout(() => {
+    window.dispatchEvent(new Event("resize"));
+  }, 300);
+}
+
+document.getElementById("btnSafety").onclick = () =>
+  showView("safety-map-view");
+
+document.getElementById("btnRoute").onclick = () =>
+  showView("route-view");
+
+document.getElementById("btnEmergency").onclick = () =>
+  showView("emergency-view");
 
   MapProvider.init("map", [26.7606, 83.3732], 13);
 
