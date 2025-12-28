@@ -71,17 +71,12 @@ function showView(id) {
   
   const sosFloat = document.querySelector(".sos-float");
   const emergencyCard = document.querySelector(".emergency-call");
-  const mapSOS = document.getElementById("sos");
 
 sosFloat?.addEventListener("click", () => {
   showView("emergency-view");
 });
 
 emergencyCard?.addEventListener("click", () => {
-  showView("emergency-view");
-});
-
-mapSOS?.addEventListener("click", () => {
   showView("emergency-view");
 });
 
