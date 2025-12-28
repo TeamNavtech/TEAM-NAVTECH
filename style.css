@@ -155,6 +155,44 @@ body {
   margin-top: 10px;
   border-radius: 16px;
 }
+/* =========================
+   ORANGE HOVER EFFECTS
+   ========================= */
+
+/* Quick action cards hover */
+.card:hover {
+  background: #f97316;            /* ORANGE */
+  color: #ffffff;
+  transform: translateY(-5px);
+  box-shadow: 0 12px 28px rgba(249,115,22,0.35);
+  transition: all 0.25s ease;
+}
+
+/* Card text hover */
+.card:hover p {
+  color: #fff;
+}
+
+/* Emergency card hover (stronger orange) */
+.card.danger:hover {
+  background: #ea580c;            /* dark orange */
+  border-color: #f97316;
+}
+
+/* SOS red circular button hover */
+.sos-float:hover {
+  background: #f97316;            /* ORANGE */
+  color: #fff;
+  transform: scale(1.15);
+  box-shadow: 0 0 25px rgba(249,115,22,0.9);
+  transition: all 0.25s ease;
+}
+
+/* Sidebar menu hover → orange */
+.menu a:hover {
+  background: #f97316;
+  color: white;
+}
 
 
 
