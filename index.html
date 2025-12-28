@@ -14,13 +14,61 @@
 
 <body>
 
-<div class="right-panel">
-  <div id="map"></div>
+<div class="app-layout">
 
-  <div class="controls">
-    <button id="simulate">Confirm Destination</button>
-    <button id="sos">🚨 SOS</button>
-  </div>
+  <!-- LEFT SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo">🛡️ SafePath</div>
+
+    <nav class="menu">
+      <a class="active">Dashboard</a>
+      <a>Safety Map</a>
+      <a>Route Planner</a>
+      <a>Emergency</a>
+      <a>Contacts</a>
+      <a>Settings</a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <p>Signed in as<br><strong>user23@gmail.com</strong></p>
+      <button>Sign Out</button>
+    </div>
+  </aside>
+
+  <!-- RIGHT CONTENT -->
+  <main class="main-content">
+
+    <header class="top-header">
+      <div>
+        <h1>Good evening, Sarah</h1>
+        <p>Stay safe, we're watching over you</p>
+      </div>
+      <button class="panic-btn">⚠️</button>
+    </header>
+
+    <section class="status-card">
+      <div class="status-icon">🛡️</div>
+      <div>
+        <h3>You're in a Safe Area</h3>
+        <p>Financial District · Safety Score: 92/100</p>
+        <div class="progress"><div class="progress-bar"></div></div>
+      </div>
+      <span>92%</span>
+    </section>
+
+    <section class="quick-actions">
+      <div class="action-card">📍 Plan Route</div>
+      <div class="action-card">🗺️ Safety Map</div>
+      <div class="action-card">👥 Share Location</div>
+      <div class="action-card emergency">🚨 Emergency</div>
+    </section>
+
+    <section class="map-section">
+      <h3>Nearby Safety Overview</h3>
+      <div id="map"></div>
+    </section>
+
+  </main>
 </div>
 
 
