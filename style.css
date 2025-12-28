@@ -48,3 +48,79 @@ button {
   background: #ff4d6d;
   color: white;
 }
+/* DASHBOARD LAYOUT */
+.app-layout {
+  display: flex;
+  height: 100vh;
+  background: #f7f9fc;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 260px;
+  background: #fff3ee;
+  padding: 20px;
+}
+
+/* HEADER */
+.top-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* PANIC BUTTON */
+.panic-btn {
+  background: #e63946;
+  color: white;
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  border: none;
+}
+
+/* STATUS CARD */
+.status-card {
+  background: white;
+  margin: 20px 0;
+  padding: 20px;
+  border-radius: 16px;
+}
+
+/* PROGRESS BAR */
+.progress {
+  height: 8px;
+  background: #eee;
+  border-radius: 4px;
+}
+
+.progress-bar {
+  width: 92%;
+  height: 100%;
+  background: #22c55e;
+}
+
+/* ACTION BUTTONS */
+.quick-actions {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.action-card {
+  background: white;
+  padding: 18px;
+  border-radius: 14px;
+}
+
+.action-card.emergency {
+  border: 2px solid #e63946;
+  color: #e63946;
+}
+
+/* MAP */
+#map {
+  height: 320px;
+  border-radius: 16px;
+}
+
