@@ -14,65 +14,72 @@
 
 <body>
 
-<div class="app-layout">
 
-  <!-- LEFT SIDEBAR -->
-  <aside class="sidebar">
-    <div class="logo">🛡️ SafePath</div>
 
-    <nav class="menu">
-      <a class="active">Dashboard</a>
-      <a>Safety Map</a>
-      <a>Route Planner</a>
-      <a>Emergency</a>
-      <a>Contacts</a>
-      <a>Settings</a>
-    </nav>
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="logo">
+    🛡️ <span>SafePath</span>
+  </div>
 
-    <div class="sidebar-footer">
-      <p>Signed in as<br><strong>user23@gmail.com</strong></p>
-      <button>Sign Out</button>
+  <nav class="menu">
+    <a class="active">Dashboard</a>
+    <a>Safety Map</a>
+    <a>Route Planner</a>
+    <a>Emergency</a>
+    <a>Contacts</a>
+    <a>Settings</a>
+  </nav>
+
+  <div class="user">
+    Signed in as<br>
+    <strong>user23@gmail.com</strong>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+  <!-- HEADER -->
+  <header class="topbar">
+    <div>
+      <h1>Good evening, Sarah</h1>
+      <p>Stay safe, we're watching over you</p>
     </div>
-  </aside>
+    <button class="sos-float">⚠</button>
+  </header>
 
-  <!-- RIGHT CONTENT -->
-  <main class="main-content">
-
-    <header class="top-header">
-      <div>
-        <h1>Good evening, Sarah</h1>
-        <p>Stay safe, we're watching over you</p>
+  <!-- STATUS CARD -->
+  <section class="status-card">
+    <div class="status-icon">🛡️</div>
+    <div class="status-info">
+      <h3>You're in a Safe Area</h3>
+      <p>Financial District • Safety Score: 92/100</p>
+      <div class="progress">
+        <div class="progress-bar" style="width:92%"></div>
       </div>
-      <button class="panic-btn">⚠️</button>
-    </header>
+    </div>
+    <span class="percent">92%</span>
+  </section>
 
-    <section class="status-card">
-      <div class="status-icon">🛡️</div>
-      <div>
-        <h3>You're in a Safe Area</h3>
-        <p>Financial District · Safety Score: 92/100</p>
-        <div class="progress"><div class="progress-bar"></div></div>
-      </div>
-      <span>92%</span>
-    </section>
+  <!-- QUICK ACTIONS -->
+  <section class="actions">
+    <div class="card">📍<br><strong>Plan Route</strong><p>Find safest path</p></div>
+    <div class="card">🗺️<br><strong>Safety Map</strong><p>View risk zones</p></div>
+    <div class="card">👥<br><strong>Share Location</strong><p>Not sharing</p></div>
+    <div class="card danger">🚨<br><strong>Emergency</strong><p>Quick access</p></div>
+  </section>
 
-    <section class="quick-actions">
-      <div class="action-card">📍 Plan Route</div>
-      <div class="action-card">🗺️ Safety Map</div>
-      <div class="action-card">👥 Share Location</div>
-      <div class="action-card emergency">🚨 Emergency</div>
-    </section>
+  <!-- MAP -->
+  <section class="map-section">
+    <h3>Nearby Safety Overview</h3>
+    <div id="map"></div>
+  </section>
 
-    <section class="map-section">
-      <h3>Nearby Safety Overview</h3>
-      <div id="map"></div>
-    </section>
-
-  </main>
-</div>
-
+</main>
 
 <script type="module" src="./app.js"></script>
+</body>
 
 
-</body></html>
+</html>
