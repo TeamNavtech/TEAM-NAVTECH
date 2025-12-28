@@ -46,48 +46,29 @@
       <h1>Good evening, Sarah</h1>
       <p>Stay safe, we're watching over you</p>
     </div>
- <button class="sos-float">⚠</button>
+ <button class="sos-float" onclick="startEmergency()">⚠</button>
 
   </header>
 
   <!-- STATUS CARD -->
-<section class="status-card">
-  <div class="status-icon">🛡️</div>
-
-  <div class="status-info">
-    <h3>You're in a Safe Area</h3>
-    <p>Financial District • Safety Score: 92/100</p>
-
-    <div class="progress">
-      <div class="progress-bar" style="width:92%"></div>
+  <section class="status-card">
+    <div class="status-icon">🛡️</div>
+    <div class="status-info">
+      <h3>You're in a Safe Area</h3>
+      <p>Financial District • Safety Score: 92/100</p>
+      <div class="progress">
+        <div class="progress-bar" style="width:92%"></div>
+      </div>
     </div>
-
-    <!-- ADD-ONLY: WARM WELCOME MESSAGE -->
-    <div class="welcome-inline">
-      <p>
-        💛 Welcome to <strong>SafePath</strong>. You are protected here.
-        Choose a safe route, stay aware of your surroundings,
-        and remember — help is always one tap away.
-      </p>
-
-      <ul>
-        <li>📍 Plan your route before moving</li>
-        <li>🗺️ Check safety zones nearby</li>
-        <li>👥 Share your live location if needed</li>
-        <li>🚨 Use Emergency instantly in danger</li>
-      </ul>
-    </div>
-  </div>
-
-  <span class="percent">92%</span>
-</section>
+    <span class="percent">92%</span>
+  </section>
 
   <!-- QUICK ACTIONS -->
   <section class="actions">
     <div class="card" id="btnRoute">📍<br><strong>Plan Route</strong></div>
     <div class="card" id="btnSafety">🗺️<br><strong>Safety Map</strong></div>
     <div class="card">👥<br><strong>Share Location</strong></div>
-  <div class="card danger emergency-call">
+  <div class="card danger emergency-call" onclick="startEmergency()">
   🚨<br>
   <strong>Emergency</strong>
   <p>Tap to activate SOS</p>
@@ -124,6 +105,79 @@
 </main>
 
 <script type="module" src="./app.js"></script>
+
+  <script>
+const PRIMARY_NUMBER = "+919264960831";   // yaha apna number daalo
+const EMERGENCY_CONTACTS = [
+  "+919264960831",
+  "+919569818546"
+];
+
+let countdown;
+let timeLeft = 5;
+
+function startEmergency() {
+  showSOSModal();
+  timeLeft = 5;
+
+  countdown = setInterval(() => {
+    document.getElementById("sosTime").innerText = timeLeft;
+    timeLeft--;
+
+    if (timeLeft < 0) {
+      clearInterval(countdown);
+      triggerEmergency();
+    }
+  }, 1000);
+}
+
+function cancelSOS() {
+  clearInterval(countdown);
+  document.getElementById("sosModal").remove();
+}
+
+function showSOSModal() {
+  const modal = document.createElement("div");
+  modal.className = "sos-modal";
+  modal.id = "sosModal";
+  modal.innerHTML = `
+    <div class="sos-box">
+      <h2>🚨 Emergency Alert</h2>
+      <p>Calling & alerting contacts in</p>
+      <div class="sos-timer" id="sosTime">5</div>
+      <button onclick="cancelSOS()">Cancel</button>
+    </div>
+  `;
+  document.body.appendChild(modal);
+}
+
+function triggerEmergency() {
+  cancelSOS();
+
+  navigator.geolocation.getCurrentPosition(pos => {
+    const lat = pos.coords.latitude;
+    const lon = pos.coords.longitude;
+    const mapLink = `https://maps.google.com/?q=${lat},${lon}`;
+
+    sendSMS(mapLink);
+    makeCall();
+  });
+}
+
+function makeCall() {
+  window.location.href = "tel:" + PRIMARY_NUMBER;
+}
+
+function sendSMS(mapLink) {
+  const msg = encodeURIComponent(
+    `🚨 EMERGENCY ALERT!\nI need help.\nMy location:\n${mapLink}`
+  );
+
+  EMERGENCY_CONTACTS.forEach(num => {
+    window.open(`sms:${num}?body=${msg}`);
+  });
+}
+</script>
 
 </body>
 
