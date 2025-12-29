@@ -85,13 +85,12 @@ export const MapProvider = (() => {
       map.removeLayer(previewMarker);
       previewMarker = null;
     }
-
-    function invalidate() {
+}
+  
+ function invalidate() {
   if (map) {
     map.invalidateSize();
   }
-}
-
     if (!finalMarker) {
       finalMarker = L.marker([pos.lat, pos.lng], { icon: redIcon }).addTo(map);
     } else {
