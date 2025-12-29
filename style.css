@@ -8,6 +8,8 @@
 body {
   display: block;
   background: #f6f8fb;
+  height: 100vh;
+  overflow: hidden;
   color: #1f2937;
   height: 100vh;
 }
@@ -33,6 +35,7 @@ body {
   opacity: 0;
   visibility: hidden;
   position: absolute;
+  overflow-y: auto;
   inset: 0;
   transition: opacity 0.3s ease;
 }
@@ -59,7 +62,8 @@ body {
   flex: 1;
   padding: 30px;
   overflow-y: auto;
-
+  
+  height:100%;
   display: flex;
   flex-direction: column;
 }
@@ -163,12 +167,12 @@ body {
 }
 
 #map {
-  height: 420px;
+  height: 100%;
   margin-top: 10px;
   border-radius: 16px;
 
   flex: 1;
-  min-height:300px;
+  min-height:0px;
 }
 
 
