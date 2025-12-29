@@ -53,12 +53,24 @@ document.getElementById("simulateRoute")
   ?.addEventListener("click", () => {
     if (!currentUserPos || !previewDestination) return;
 
+    // draw route
     MapProvider.drawRoute([
       currentUserPos,
       previewDestination
     ]);
+
+    // draw FINAL red marker
+    MapProvider.confirmDestination(previewDestination);
+
+    // swap buttons
+    document.getElementById("simulateRoute").hidden = true;
+    document.getElementById("alternateRoute").hidden = false;
   });
 
+document.getElementById("alternateRoute")
+  ?.addEventListener("click", () => {
+    // intentionally empty for now
+  });
 
   /* ================= SOS ================= */
   document.querySelector(".sos-float")
