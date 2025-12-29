@@ -22,6 +22,7 @@ body {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  position: relative;
 }
 .card,
 .sos-float {
@@ -29,15 +30,19 @@ body {
 }
 
 .content-view {
-  display: none;
-  height: 100%;
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  inset: 0;
+  transition: opacity 0.3s ease;
 }
 
 .content-view.active {
-  display: block;
-  flex-direction: column;
-  height: 100%;
+  opacity: 1;
+  visibility: visible;
+  position: relative;
 }
+
 
 
 /* Map buttons */
