@@ -117,6 +117,10 @@ body {
   border-radius: 5px;
 }
 
+.progress-bar.safe {
+  width: 92%;
+}
+
 .percent {
   margin-left: auto;
   font-weight: 700;
