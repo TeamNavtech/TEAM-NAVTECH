@@ -39,6 +39,7 @@ body {
 
 .content-view.active {
   display: flex;
+  flex-direction: column;
 }
 
 /* Map buttons */
@@ -169,6 +170,9 @@ body {
   min-height:0px;
 }
 
+#safety-map-view.active {
+  flex-direction: row;
+}
 
 .card:hover {
   background: #f97316;            /* ORANGE */
