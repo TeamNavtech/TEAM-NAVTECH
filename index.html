@@ -61,19 +61,28 @@
   <p>Select an action card to continue.</p>
 </div>
 
-  <div id="safety-map-view" class="content-view">
-  <p class="mb-10">
-    🗺️ Viewing nearby safety zones.  
-    Red areas indicate higher risk.
-  </p>
-    
-  <div class="map-actions">
-    <button id="confirmLocation">✔ Confirm Location</button>
-    <button id="simulateRoute">🧪 Simulate Route</button>
+  <div id="safety-map-view" class="content-view map-view">
+
+  <!-- LEFT: MAP -->
+  <div class="map-left">
+    <div id="map"></div>
   </div>
-    
-  <div id="map"></div>
+
+  <!-- RIGHT: INFO + BUTTONS -->
+  <div class="map-right">
+    <p class="mb-10">
+      🗺️ Viewing nearby safety zones.<br>
+      Red areas indicate higher risk.
+    </p>
+
+    <div class="map-actions">
+      <button id="confirmLocation">✔ Confirm Location</button>
+      <button id="simulateRoute">🧪 Simulate Route</button>
+    </div>
+  </div>
+
 </div>
+
 
 
   <!-- ROUTE PLANNER VIEW -->
