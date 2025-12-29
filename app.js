@@ -43,6 +43,22 @@ window.addEventListener("DOMContentLoaded", () => {
       setTimeout(() => MapProvider.invalidate(), 300);
     }
   }
+  document.getElementById("confirmLocation")
+  ?.addEventListener("click", () => {
+    if (!previewDestination) return;
+    MapProvider.confirmDestination(previewDestination);
+  });
+
+document.getElementById("simulateRoute")
+  ?.addEventListener("click", () => {
+    if (!currentUserPos || !previewDestination) return;
+
+    MapProvider.drawRoute([
+      currentUserPos,
+      previewDestination
+    ]);
+  });
+
 
   /* ================= SOS ================= */
   document.querySelector(".sos-float")
