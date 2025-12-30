@@ -425,3 +425,23 @@ body {
   border: none !important;
   background: transparent !important;
 }
+.app-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.app-logo img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+}
+
+.app-logo span {
+  font-size: 18px;
+  font-weight: 700;
+  color: #6b21a8;
+}
+
