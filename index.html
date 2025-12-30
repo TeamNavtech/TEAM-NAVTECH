@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" style="height:100%"><head>
+<meta charset="utf-8">
+<title>Women Safety App</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="./styles.css">
+
+<!-- Leaflet -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css">
+<script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+
+
+</head>
+
+<body>
+
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+  <!-- HEADER -->
+  <header class="topbar">
+    <div class="title-block">
+  <img src="./icon.png" class="app-icon">
+  <div>
+    <h1>Good evening, Sarah</h1>
+    <p>Stay safe, we're watching over you</p>
+  </div>
+</div>
+  <div style="display: flex; gap: 10px; align-items: center;">
+    <button id="btnHome" class="home-btn" title="Go Home">🏠</button> 
+    <button class="sos-float" id="sosFloat">⚠</button>
+  </div>
+  </header>
+
+  <!-- STATUS CARD -->
+  <section class="status-card">
+    <div class="status-icon">🛡️</div>
+    <div class="status-info">
+      <h3>You're in a Safe Area</h3>
+      <p>Financial District • Safety Score: 92/100</p>
+      <div class="progress">
+        <div class="progress-bar safe"></div>
+      </div>
+    </div>
+    <span class="percent">92%</span>
+  </section>
+
+  <!-- QUICK ACTIONS -->
+  <section class="actions">
+    <div class="card" id="btnRoute">📍<br><strong>Plan Route</strong></div>
+    <div class="card" id="btnSafety">🗺️<br><strong>Safety Map</strong></div>
+    <div class="card">👥<br><strong>Share Location</strong></div>
+  <div class="card danger emergency-call">
+  🚨<br>
+  <strong>Emergency</strong>
+  <p>Tap to activate SOS</p>
+</div>
+
+  </section>
+  <!-- CONTENT FRAME (loads map / other views here) -->
+<section class="content-frame">
+  
+<!-- 👋 DEFAULT WELCOME VIEW -->
+<div id="welcome-view" class="content-view active">
+  <h2>👋 Welcome to SafePath</h2>
+  <p>Select an action card to continue.</p>
+</div>
+
+  <div id="safety-map-view" class="content-view map-view">
+
+  <!-- LEFT: MAP -->
+  <div class="map-left">
+     <div id="map"></div>
+  </div>
+
+  <!-- RIGHT: INFO + BUTTONS -->
+  <div class="map-right">
+    <p class="mb-10">
+      🗺️ Viewing nearby safety zones.<br>
+      Red areas indicate higher risk.
+    </p>
+    <div id="route-panel"></div>
+
+    <div class="map-actions route-actions">
+  <button id="simulateRoute" disabled>🧪 Simulate Route</button>
+  <button id="alternateRoute" style="display: none;">🔁 Alternate Route</button>
+   </div>
+  </div>
+</div>
+
+
+
+  <!-- ROUTE PLANNER VIEW -->
+  <div id="route-view" class="content-view">
+  <h3>📍 Route Planner</h3>
+  <p>
+    Choose a destination to find the safest path.
+  </p>
+</div>
+
+  <!-- EMERGENCY VIEW -->
+<div id="emergency-view" class="content-view">
+  <h2>🚨 SOS Mode Activated</h2>
+  <h3>Sending alert in <span id="sosTime">5</span> seconds</h3>
+
+  <p class="mt-12 text-lg">
+    Stay calm. Help is being notified 💛
+  </p>
+
+  <p class="mt-10 lh-16">
+    📡 Emergency alerts are being prepared<br>
+    🚓 Nearby safety services can be contacted<br>
+    📍 Your location is ready to be shared
+  </p>
+
+  <p class="warn">
+    If this was accidental, you can cancel below.
+  </p>
+
+  <div style="margin-top:16px">
+    <button id="confirmSOS">Confirm SOS</button>
+    <button id="cancelSOS">Cancel</button>
+  </div>
+</div>
+
+
+
+</section>
+
+</main>
+
+<script type="module" src="./app.js"></script>
+
+</body>
+
+
+</html>
