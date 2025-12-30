@@ -210,4 +210,19 @@ function distanceInMeters(a, b) {
     Math.sin(dLng / 2) ** 2 * Math.cos(lat1) * Math.cos(lat2);
 
   return 2 * R * Math.asin(Math.sqrt(h));
+
+}
+const sosBtn = document.getElementById("sosBtn");
+const emergencyView = document.getElementById("emergency-view");
+
+if (sosBtn) {
+  sosBtn.addEventListener("click", () => {
+    // sab screens hide
+    document.querySelectorAll(".content-view").forEach(view => {
+      view.classList.remove("active");
+    });
+
+    // emergency screen show
+    emergencyView.classList.add("active");
+  });
 }
