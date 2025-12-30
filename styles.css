@@ -68,15 +68,39 @@ body {
   color: #6b7280;
 }
 
+/* SOS LOGO BUTTON */
 .sos-float {
-  background: #dc2626;
-  color: white;
-  border: none;
-  width: 50px;
-  height: 50px;
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+
+  width: 64px;
+  height: 64px;
+  padding: 0;
+
   border-radius: 50%;
-  font-size: 20px;
+  border: none;
+  background: transparent;
+
   cursor: pointer;
+  z-index: 9999;
+}
+
+/* IMAGE INSIDE BUTTON */
+.sos-float img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+
+  box-shadow: 0 10px 25px rgba(128,0,128,0.35);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* HOVER EFFECT */
+.sos-float:hover img {
+  transform: scale(1.12);
+  box-shadow: 0 0 30px rgba(249,115,22,0.9);
 }
 
 /* STATUS CARD */
@@ -444,4 +468,5 @@ body {
   font-weight: 700;
   color: #6b21a8;
 }
+
 
