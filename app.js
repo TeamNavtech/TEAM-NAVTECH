@@ -27,60 +27,128 @@ let currentUserPos = null;
 let previewDestination = null;
 let cachedCrimeZones = [];
 let lastCrimeDraw = 0;
+let safePlaces = [];
+let mapInitialized = false;
+let sosTimer = 300; // 5 minutes
+let sosInterval = null;
+
 
 window.addEventListener("DOMContentLoaded", () => {
 
-  /* ================= VIEW SWITCHING ================= */
+  const sosBtn = document.getElementById("sosFloat");
+const overlay = document.getElementById("sos-overlay");
+const imSafeBtn = document.getElementById("imSafeBtn");
+const goBackBtn = document.getElementById("goBackBtn");
+const sosIcon = document.getElementById("sosIcon");
+
+// timer badge
+const timerBadge = document.createElement("span");
+timerBadge.className = "sos-timer";
+sosBtn.appendChild(timerBadge);
+
+function updateBadge() {
+  const m = Math.floor(sosTimer / 60);
+  const s = sosTimer % 60;
+  timerBadge.textContent = `${m}:${String(s).padStart(2, "0")}`;
+
+  // ✅ ICON STATE (ALWAYS IN SYNC)
+  if (sosTimer <= 0) {
+    sosBtn.textContent = "🚨";
+  } else if (sosTimer <= 60) {
+    sosBtn.textContent = "⏳";
+  } else {
+    sosBtn.textContent = "⚠";
+  }
+  sosBtn.classList.toggle("urgent", sosTimer <= 60);
+
+}
+
+
+
   function showView(id) {
+    // Hide ALL views first
     document.querySelectorAll(".content-view").forEach(v => {
       v.classList.remove("active");
+      v.style.display = "none";
     });
 
-    const target = document.getElementById(id);
-    if (target) target.classList.add("active");
+    // Show only the target view
+    const targetView = document.getElementById(id);
+    if (targetView) {
+      targetView.classList.add("active");
+      // Ensure correct display type
+      targetView.style.display = (id === "safety-map-view") ? "flex" : "block";
+    }
 
+    // Handle Map Refresh
     if (id === "safety-map-view") {
-      setTimeout(() => MapProvider.invalidate(), 300);
+      if (!mapInitialized) {
+        MapProvider.init("map", [26.7606, 83.3732], 13);
+        mapInitialized = true;
+      }
+
+      // Ensure simulate button is reset
+      const sim = document.getElementById("simulateRoute");
+      if (sim) {
+        sim.disabled = true;
+        sim.style.opacity = "0.5";
+      }
+
+      MapProvider.refresh();
     }
   }
-  document.getElementById("confirmLocation")
-  ?.addEventListener("click", () => {
-    if (!previewDestination) return;
-    MapProvider.confirmDestination(previewDestination);
+
+  function startSosTimer() {
+  if (sosInterval) clearInterval(sosInterval);
+
+  sosInterval = setInterval(() => {
+    sosTimer--;
+    updateBadge();
+
+  if (sosTimer <= 0) {
+  overlay.style.display = "none";
+  showView("emergency-view"); // SOS opens
+}
+
+  }, 1000);
+}
+
+updateBadge();
+startSosTimer();
+
+sosBtn.addEventListener("click", () => {
+  overlay.style.display = "flex";
+});
+
+imSafeBtn.addEventListener("click", () => {
+  sosTimer = 300;
+  updateBadge();
+  startSosTimer();
+  overlay.style.display = "none";
+});
+
+goBackBtn.addEventListener("click", () => {
+  overlay.style.display = "none";
+});
+
+
+  /* ================= NAVIGATION ================= */
+  document.getElementById("btnHome")?.addEventListener("click", () => {
+    showView("welcome-view");
   });
 
-document.getElementById("simulateRoute")
-  ?.addEventListener("click", () => {
-    if (!currentUserPos || !previewDestination) return;
 
-    // draw route
-    MapProvider.drawRoute([
-      currentUserPos,
-      previewDestination
-    ]);
-
-    // draw FINAL red marker
-    MapProvider.confirmDestination(previewDestination);
-
-    // swap buttons
-    document.getElementById("simulateRoute").hidden = true;
-    document.getElementById("alternateRoute").hidden = false;
-  });
-
-document.getElementById("alternateRoute")
-  ?.addEventListener("click", () => {
-    // intentionally empty for now
-  });
-
-  /* ================= SOS ================= */
-  document.querySelector(".sos-float")
-    ?.addEventListener("click", () => showView("emergency-view"));
+  document.getElementById("alternateRoute")
+    ?.addEventListener("click", () => {
+      // intentionally empty for now
+    });
 
   document.querySelector(".emergency-call")
     ?.addEventListener("click", () => showView("emergency-view"));
 
-  document.getElementById("confirmSOS")
-    ?.addEventListener("click", startEmergency);
+document.getElementById("confirmSOS")
+  ?.addEventListener("click", startEmergency);
+
 
   document.getElementById("cancelSOS")
     ?.addEventListener("click", () => {
@@ -95,14 +163,18 @@ document.getElementById("alternateRoute")
   document.getElementById("btnRoute")
     ?.addEventListener("click", () => showView("route-view"));
 
-  /* ================= MAP INIT (ONCE) ================= */
-  MapProvider.init("map", [26.7606, 83.3732], 13);
-
   /* ================= FIREBASE CRIME ZONES ================= */
   const crimeZonesRef = collection(db, "crimeZones");
   onSnapshot(crimeZonesRef, snap => {
     cachedCrimeZones = snap.docs.map(d => d.data());
     console.log("✅ Crime zones loaded:", cachedCrimeZones.length);
+  });
+
+  const safePlacesRef = collection(db, "safePlaces");
+
+  onSnapshot(safePlacesRef, snap => {
+    safePlaces = snap.docs.map(d => d.data());
+    console.log("✅ Safe places loaded:", safePlaces.length);
   });
 
   /* ================= GPS TRACKING ================= */
@@ -114,22 +186,60 @@ document.getElementById("alternateRoute")
       };
 
       MapProvider.setUser(currentUserPos);
+      const nearbySafePlaces = getNearbySafePlaces(700);
+      MapProvider.drawSafePlaces(nearbySafePlaces);
 
-      const now = Date.now();
-      if (now - lastCrimeDraw > 2000) {
+      // draw immediately on first fix
+      if (lastCrimeDraw === 0) {
         drawNearbyCrimeZones();
-        lastCrimeDraw = now;
+        lastCrimeDraw = Date.now();
+      } else {
+        const now = Date.now();
+        if (now - lastCrimeDraw > 2000) {
+          drawNearbyCrimeZones();
+          lastCrimeDraw = now;
+        }
       }
+
     },
     err => console.error("GPS error:", err),
     { enableHighAccuracy: true }
+
   );
 
-  /* ================= MAP CLICK ================= */
+
+  /* ================= MAP INTERACTION ================= */
   MapProvider.onClick(pos => {
-    previewDestination = pos;
-    MapProvider.previewDestination(pos);
+    previewDestination = pos; // Stores the click
+    MapProvider.previewDestination(pos); // Shows the yellow marker
+
+    // This unlocks the Simulate button
+    const sim = document.getElementById("simulateRoute");
+    if (sim) {
+      sim.disabled = false;
+      sim.style.opacity = "1";
+      sim.style.cursor = "pointer";
+    }
+
+    // Keeps UI clean until simulation starts
+    document.getElementById("alternateRoute").style.display = "none";
+    document.getElementById("route-panel").style.display = "none";
   });
+  /* ================= SIMULATION ================= */
+  document.getElementById("simulateRoute")
+    ?.addEventListener("click", () => {
+      if (!currentUserPos || !previewDestination) return;
+
+      MapProvider.drawRoute([currentUserPos, previewDestination]);
+      MapProvider.confirmDestination(previewDestination);
+
+      document.getElementById("alternateRoute").style.display = "inline-flex";
+      document.getElementById("route-panel").style.display = "block";
+
+      const sim = document.getElementById("simulateRoute");
+      sim.disabled = true;
+      sim.style.opacity = "0.5";
+    });
 
 });
 
@@ -141,10 +251,21 @@ function drawNearbyCrimeZones() {
     distanceInMeters(currentUserPos, {
       lat: z.lat,
       lng: z.lng
-    }) <= 5000
+    }) <= 3000
   );
 
   MapProvider.drawCrimeZones(nearby);
+}
+
+function getNearbySafePlaces(radius = 700) {
+  if (!currentUserPos) return [];
+
+  return safePlaces.filter(p =>
+    distanceInMeters(currentUserPos, {
+      lat: p.lat,
+      lng: p.lng
+    }) <= radius
+  );
 }
 
 /* ================= DISTANCE (HAVERSINE) ================= */
