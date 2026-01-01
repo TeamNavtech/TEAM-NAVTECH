@@ -1,5 +1,5 @@
 // sos.js
-const PRIMARY_NUMBER = "+919264960831";
+const PRIMARY_NUMBER = "+9192ytds831";
 const EMERGENCY_CONTACTS = [
   "+91abcd960831",
   "+9195vxyz8546"
@@ -12,7 +12,7 @@ let sosActive = false;
 export function startEmergency() {
   if (sosActive) return;
   sosActive = true;
-  
+
   timeLeft = 5;
 
   countdown = setInterval(() => {
@@ -32,7 +32,7 @@ export function cancelEmergency() {
 }
 
 function triggerEmergency() {
-  sosActive=false;
+  sosActive = false;
 
   navigator.geolocation.getCurrentPosition(
     pos => {
