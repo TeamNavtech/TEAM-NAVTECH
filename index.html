@@ -1,13 +1,17 @@
 <!DOCTYPE html>
-<html lang="en"><head>
-<meta charset="utf-8">
-<title>Women Safety App</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="style.css">
+<html lang="en" style="height:100%">
 
-<!-- Leaflet -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<head>
+  <meta charset="utf-8">
+  <title>Women Safety App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="./styles.css">
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css">
+  <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
 
 
 </head>
@@ -15,116 +19,174 @@
 <body>
 
 
-<!-- MAIN CONTENT -->
-<main class="main">
+  <!-- MAIN CONTENT -->
+  <main class="main">
 
-  <!-- HEADER -->
-  <header class="topbar">
+    <!-- HEADER -->
+    <header class="topbar">
+      <div class="title-block">
+        <img src="./icon.png" class="app-icon">
+        <div>
+          <h1>Good evening, Sarah</h1>
+          <p class="subtitle">
+            AI-powered safety monitoring active • Live risk analysis enabled
+          </p>
+
+        </div>
+      </div>
+      <div style="display: flex; gap: 10px; align-items: center;">
+
+        <!-- AI STATUS INDICATOR -->
+        <span class="ai-status">🧠 AI Active</span>
+
+        <button id="btnHome" class="home-btn" title="Go Home">🏠</button>
+        <button class="sos-float" id="sosFloat">
+          <span id="sosIcon">⚠</span>
+        </button>
+
+      </div>
+
+    </header>
+
+    <!-- STATUS CARD -->
+    <section class="status-card">
+      <div class="status-icon">🛡️</div>
+      <div class="status-info">
+        <h3>Area Risk: LOW</h3>
+        <p>
+          Financial District • AI Safety Score: <strong>92 / 100</strong><br>
+          Based on crime history & live signals
+        </p>
+
+        <div class="progress">
+          <div class="progress-bar safe"></div>
+        </div>
+      </div>
+      <span class="percent">92%</span>
+    </section>
+
+    <!-- QUICK ACTIONS -->
+    <section class="actions">
+      <div class="card" id="btnRoute">
+        📍<br>
+        <strong>Safest Route</strong>
+        <p>AI-optimized path</p>
+      </div>
+
+      <div class="card" id="btnSafety">🗺️<br><strong>Safety Map</strong></div>
+      <div class="card" id="btnShare">
+  👥<br>
+  <strong>Share Location</strong>
+</div>
+
+      <div class="card danger emergency-call">
+        🚨<br>
+        <strong>Emergency</strong>
+        <p>Tap to activate SOS</p>
+      </div>
+     
+
+    </section>
+    <!-- CONTENT FRAME (loads map / other views here) -->
+    <section class="content-frame">
+      <!-- 👋 DEFAULT WELCOME VIEW -->
+      <div id="welcome-view" class="content-view active">
+        <h2>👋 Welcome to SafePath</h2>
+        <p>Your AI companion for safer travel.<br>
+          We continuously monitor risk and alert help if needed.
+        </p>
+
+
+
+
+        <div class="risk-legend">
+          <span class="low">🟢 Low Risk</span>
+          <span class="medium">🟡 Medium Risk</span>
+          <span class="high">🔴 High Risk</span>
+        </div>
+      </div>
+
+      <div id="safety-map-view" class="content-view map-view">
+
+        <!-- LEFT: MAP -->
+        <div class="map-left">
+          <div id="map"></div>
+        </div>
+
+        <!-- RIGHT: INFO + BUTTONS -->
+        <div class="map-right">
+          <p class="mb-10">
+            🧠 AI Safety Analysis Active<br>
+            🔴 High-risk zones • 🟢 Safer paths<br>
+            🚓 Nearby help points highlighted
+          </p>
+
+          <div id="route-panel"></div>
+
+          <div class="map-actions route-actions">
+            <button id="simulateRoute" disabled>🧪 Simulate Route</button>
+            <button id="alternateRoute" style="display: none;">🔁 Alternate Route</button>
+          </div>
+        </div>
+      </div>
+
+
+
+      <!-- ROUTE PLANNER VIEW -->
+      <div id="route-view" class="content-view">
+        <h3>📍 Route Planner</h3>
+        <p>
+          Choose a destination to find the safest path.
+        </p>
+      </div>
+
+      <!-- EMERGENCY VIEW -->
+      <div id="emergency-view" class="content-view">
+        <h2>🚨 SOS Mode Activated</h2>
+        <h3>Sending alert in <span id="sosTime">5</span> seconds</h3>
+
+        <p class="mt-12 text-lg">
+          Stay calm. Help is being notified 💛
+        </p>
+
+        <p class="mt-10 lh-16">
+          📡 Emergency alerts are being prepared<br>
+          🚓 Nearby safety services can be contacted<br>
+          📍 Your location is ready to be shared
+        </p>
+
+        <p class="warn">
+          If this was accidental, you can cancel below.
+        </p>
+
+        <div style="margin-top:16px">
+          <button id="confirmSOS">Confirm SOS</button>
+          <button id="cancelSOS">Cancel</button>
+        </div>
+      </div>
+
+
+
+    </section>
     <div>
-      <h1>Good evening, Sarah</h1>
-      <p>Stay safe, we're watching over you</p>
-    </div>
- <button class="sos-float" id="sosFloat">⚠</button>
-  </header>
+      
 
-  <!-- STATUS CARD -->
-  <section class="status-card">
-    <div class="status-icon">🛡️</div>
-    <div class="status-info">
-      <h3>You're in a Safe Area</h3>
-      <p>Financial District • Safety Score: 92/100</p>
-      <div class="progress">
-        <div class="progress-bar safe"></div>
+  </main>
+
+  <!-- SOS TIMER OVERLAY -->
+  <div id="sos-overlay" style="display:none;" class="sos-overlay">
+    <div class="sos-modal">
+      <h2>⚠ Safety Check</h2>
+      <p>No response detected.</p>
+
+      <div class="sos-actions">
+        <button id="imSafeBtn">✅ I’m Safe</button>
+        <button id="goBackBtn">🔙 Go Back</button>
       </div>
     </div>
-    <span class="percent">92%</span>
-  </section>
-
-  <!-- QUICK ACTIONS -->
-  <section class="actions">
-    <div class="card" id="btnRoute">📍<br><strong>Plan Route</strong></div>
-    <div class="card" id="btnSafety">🗺️<br><strong>Safety Map</strong></div>
-    <div class="card">👥<br><strong>Share Location</strong></div>
-  <div class="card danger emergency-call">
-  🚨<br>
-  <strong>Emergency</strong>
-  <p>Tap to activate SOS</p>
-</div>
-
-  </section>
-  <!-- CONTENT FRAME (loads map / other views here) -->
-<section class="content-frame">
-  
-<!-- 👋 DEFAULT WELCOME VIEW -->
-<div id="welcome-view" class="content-view active">
-  <h2>👋 Welcome to SafePath</h2>
-  <p>Select an action card to continue.</p>
-</div>
-
-  <div id="safety-map-view" class="content-view map-view">
-
-  <!-- LEFT: MAP -->
-  <div class="map-left">
-     <div id="map"></div>
   </div>
+  <script type="module" src="./app.js"></script>
 
-  <!-- RIGHT: INFO + BUTTONS -->
-  <div class="map-right">
-    <p class="mb-10">
-      🗺️ Viewing nearby safety zones.<br>
-      Red areas indicate higher risk.
-    </p>
-
-    <div class="map-actions">
-      <button id="alternateRoute" hidden>🔁 Alternate Route</button>
-      <button id="simulateRoute">🧪 Simulate Route</button>
-    </div>
-
-  </div>
-</div>
-
-
-
-  <!-- ROUTE PLANNER VIEW -->
-  <div id="route-view" class="content-view">
-  <h3>📍 Route Planner</h3>
-  <p>
-    Choose a destination to find the safest path.
-  </p>
-</div>
-
-  <!-- EMERGENCY VIEW -->
-<div id="emergency-view" class="content-view">
-  <h2>🚨 SOS Mode Activated</h2>
-  <h3>Sending alert in <span id="sosTime">5</span> seconds</h3>
-
-  <p class="mt-12 text-lg">
-    Stay calm. Help is being notified 💛
-  </p>
-
-  <p class="mt-10 lh-16">
-    📡 Emergency alerts are being prepared<br>
-    🚓 Nearby safety services can be contacted<br>
-    📍 Your location is ready to be shared
-  </p>
-
-  <p class="warn">
-    If this was accidental, you can cancel below.
-  </p>
-
-  <div style="margin-top:16px">
-    <button id="confirmSOS">Confirm SOS</button>
-    <button id="cancelSOS">Cancel</button>
-  </div>
-</div>
-
-
-
-</section>
-
-</main>
-
-<script type="module" src="./app.js"></script>
 
 </body>
 
