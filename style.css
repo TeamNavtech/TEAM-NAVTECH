@@ -1,622 +1,149 @@
-html {
-  height: 100%;
+body{
+  margin:0;
+  font-family:system-ui,sans-serif;
+  color:#fff;
+  background:
+    radial-gradient(600px 400px at 10% 10%, rgba(123,97,255,0.18), transparent 60%),
+    radial-gradient(500px 350px at 90% 20%, rgba(53,208,127,0.15), transparent 60%),
+    linear-gradient(135deg,#0a0f2b,#11184a,#1b1f63);
+  min-height:100vh;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: system-ui, sans-serif;
+.container{
+  max-width:900px;
+  margin:auto;
+  padding:16px;
 }
 
-body {
-background-color: #F3F6FB;
-  height: 100%;
-  overflow: hidden;
-  color: #1f2937;
+#map{
+  height:420px;
+  border-radius:12px;
+  border:1px solid #2c3270;
 }
 
-.content-frame {
-  margin-top: 25px;
-  background: #eee5e5;
-  padding: 16px;
-  border-radius: 18px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-  height: 100%;
-
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  position: relative;
+input{
+  width:100%;
+  padding:10px;
+  margin-bottom:10px;
+  border-radius:10px;
+  border:1px solid #2c3270;
+  background:#0f1440;
+  color:#fff;
 }
 
-.card,
-.sos-float {
-  transition: all 0.25s ease;
+.buttons{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:10px;
 }
 
-.content-view {
-  display: none !important;
-  flex: 1;
-  min-height: 0;
-  overflow: hidden;
+button{
+  padding:10px 14px;
+  border-radius:10px;
+  border:none;
+  cursor:pointer;
+  background:#141a4c;
+  color:white;
 }
 
-
-.content-view.active {
-  display: block !important;
-  flex-direction: column;
+button.primary{
+  background:linear-gradient(135deg,#7b61ff,#9a4dff);
+  color:#0a0930;
+  font-weight:600;
 }
 
-/* MAIN */
-.main {
-  height: 100%;
-  padding: 30px;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
+#statusBox{
+  margin-top:10px;
+  padding:10px;
+  border-radius:10px;
+  background:#121840;
+  border:1px solid #2c3270;
 }
 
-
-/* HEADER */
-.topbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  padding: 18px 22px;
-  border-radius: 20px;
-
-  background: rgba(255, 230, 250, 0.65);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+@keyframes sosFlash{
+  0%{background:#0a0f2b}
+  50%{background:#2b1320}
+  100%{background:#0a0f2b}
+  
 }
-
-.topbar h1 {
-  font-size: 28px;
-  font-weight: 600;
-  color: #1f2937;
-}
-
-.topbar .subtitle {
-  color: #6b7280;
-}
-
-
-.topbar .subtitle {
-  color: #475569;
-}
-
-
-
-.topbar p {
-  color: #030011;
-}
-
-.sos-float {
-  background: #dc2626;
-  color: white;
-  border: none;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  font-size: 20px;
-  cursor: pointer;
-}
-
-/* STATUS CARD */
-.status-card {
-  background: rgba(241, 251, 245, 0.85); /* soft green + transparent */
-  margin-top: 25px;
-  padding: 20px;
-  border-radius: 16px;
-
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: 20px;
-
-  backdrop-filter: blur(8px);     /* 👈 GLASS EFFECT */
-  -webkit-backdrop-filter: blur(8px); /* Safari support */
-  border: 1px solid rgba(255, 255, 255, 0.6);
-}
-
-
-
-
-.status-info h3 {
-  font-size: 18px;
-  font-weight: 600;
-}
-
-.status-info p {
-  font-size: 13px;
-  color: #4b5563;
-
-}
-
-.status-card {
-  border-left: 6px solid #22c55e;
-}
-
-
-
-.status-icon {
-  background: #dcfce7;
-  color: #16a34a;
-  font-size: 26px;
-  padding: 15px;
-  border-radius: 12px;
-}
-
-.progress {
-  height: 8px;
-  background: #e5e7eb;
-  border-radius: 5px;
-  margin-top: 8px;
-}
-
-.progress-bar {
-  height: 100%;
-  background: #22c55e;
-  border-radius: 5px;
-}
-
-.progress-bar.safe {
-  width: 92%;
-}
-
-.percent {
-  background: #dcfce7;
-  color: #166534;
-  font-weight: 700;
-  padding: 8px 14px;
-  border-radius: 999px;
-  font-size: 14px;
-
-
-}
-
-/* ACTIONS */
-.actions {
-  margin-top: 25px;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 15px;
-}
-
-.card {
-  background: white;
-  padding: 20px;
-  border-radius: 14px;
-  text-align: center;
-  cursor: pointer;
-}
-
-.card {
-  border: 1px solid #e5e7eb;
-  background: white;
-}
-
-/* ===== QUICK ACTION LEFT STRIPS (FINAL FIX) ===== */
-
-#btnRoute {
-  border-left: 5px solid #2563eb; /* BLUE */
-}
-
-#btnSafety {
-  border-left: 5px solid #16a34a; /* GREEN */
-}
-
-#btnShare {
-  border-left: 5px solid #7c3aed; /* PURPLE */
-}
-
-/* FORCE emergency red strip (override danger styles) */
-.card.danger.emergency-call {
-  border-left: 5px solid #dc2626 !important; /* RED */
-  border-top: 1px solid #fecaca;
-  border-right: 1px solid #fecaca;
-  border-bottom: 1px solid #fecaca;
-}
-
-.card {
-  position: relative;
-  overflow: hidden;
-}
-
-
-
-.card p {
-  font-size: 13px;
-  color: #6b7280;
-}
-
-.card.danger {
-  border: 2px solid #fecaca;
-}
-
-#safety-map-view.active {
-  flex-direction: row;
-}
-
-/* ===== CARD-SPECIFIC HOVER COLORS ===== */
-
-/* Safest Route → Light Blue */
-#btnRoute:hover {
-  background: #eff6ff; /* very light blue */
-  transform: translateY(-4px);
-  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.25);
-}
-
-/* Safety Map → Light Green */
-#btnSafety:hover {
-  background: #ecfdf5; /* very light green */
-  transform: translateY(-4px);
-  box-shadow: 0 10px 25px rgba(22, 163, 74, 0.25);
-}
-
-/* Share Location → Light Purple */
-#btnShare:hover {
-  background: #f5f3ff; /* very light purple */
-  transform: translateY(-4px);
-  box-shadow: 0 10px 25px rgba(124, 58, 237, 0.25);
-}
-
-/* Emergency → Soft Red */
-.card.danger.emergency-call:hover {
-  background: #fff1f2; /* light red */
-  transform: translateY(-4px);
-  box-shadow: 0 10px 25px rgba(220, 38, 38, 0.3);
-}
-
-
-/* SOS red circular button hover */
-.sos-float:hover {
-  background: #f97316;
-  /* ORANGE */
-  color: #fff;
-  transform: scale(1.15);
-  box-shadow: 0 0 25px rgba(249, 115, 22, 0.9);
-  transition: all 0.25s ease;
-}
-
-/* Sidebar menu hover → orange */
-.menu a:hover {
-  background: #f97316;
-  color: white;
-}
-
-@media (max-width: 900px) {
-  body {
-    flex-direction: column;
-  }
-
-  .sidebar {
-    width: 100%;
-    flex-direction: row;
-    overflow-x: auto;
-  }
-
-  .actions {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-.mb-10 {
-  margin-bottom: 10px;
-}
-
-.mt-12 {
-  margin-top: 12px;
-}
-
-
-.text-lg {
-  font-size: 16px;
-}
-
-.text-warn {
-  color: #9a3412;
-}
-
-.mt-10 {
+/* STATUS PANEL (NEW) */
+.status-panel {
+  background: #11184a;
+  padding: 12px;
   margin-top: 10px;
-}
-
-.lh-16 {
-  line-height: 1.6;
-}
-
-.map-actions button {
-  padding: 8px 12px;
-  border: none;
   border-radius: 10px;
-  background: #111827;
-  color: white;
-  font-size: 13px;
-  cursor: pointer;
-}
-
-.map-actions button:hover {
-  background: #f97316;
-}
-
-.map-view {
-  display: flex;
-  height: 100%;
-  overflow: hidden;
-  flex: 1;
-}
-
-.route-actions {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  display: flex;
-  flex-direction: column;
-  /* stack */
-  gap: 8px;
-  z-index: 1000;
-}
-
-.route-actions button {
-  padding: 8px 12px;
-  border: none;
-  border-radius: 10px;
-  background: #111827;
-  color: white;
-  font-size: 13px;
-  cursor: pointer;
-}
-
-.route-actions button:hover {
-  background: #f97316;
-}
-
-/* ===== SINGLE SOURCE: MAP + ROUTING ===== */
-
-#safety-map-view.active {
-  display: flex !important;
-  flex-direction: row;
-  gap: 12px;
-  height: 100%;
-}
-
-/* LEFT MAP */
-.map-left {
-  flex: 1;
-  height: 100%;
-}
-
-#map {
-  width: 100%;
-  height: 100%;
-  border-radius: 16px;
-}
-
-/* RIGHT PANEL */
-.map-right {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 16px;
-  overflow: hidden;
-}
-
-/* ROUTE INSTRUCTIONS PANEL */
-#route-panel {
-  display: none;
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
-  background: #f9fafb;
-  border-radius: 12px;
-  padding: 10px;
-}
-
-/* FORCE LEAFLET ROUTING INTO PANEL */
-#route-panel .leaflet-routing-container {
-  position: static !important;
-  width: 100% !important;
-  max-width: 100% !important;
-  box-shadow: none !important;
-  border: none !important;
-  background: transparent !important;
-}
-
-/* Welcome and Route views use standard block display when active 
-#welcome-view.active,
-#route-view.active,
-#emergency-view.active {
-  display: block;
-}
-  */
-.home-btn {
-  background: white;
-  border: 1px solid #e5e7eb;
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
-  cursor: pointer;
-  font-size: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-}
-
-.home-btn:hover {
-  background: #f97316;
-  /* Matches your theme's orange hover */
-  color: white;
-  transform: scale(1.1);
-  border-color: #f97316;
-}
-
-/* Initial state for buttons */
-#simulateRoute:disabled {
-  background: #9ca3af !important;
-  cursor: not-allowed;
-  opacity: 0.5;
-}
-
-#alternateRoute {
-  display: none;
-  /* Hidden until simulation */
-}
-
-/* Gray out the simulate button until a location is picked */
-#simulateRoute:disabled {
-  background: #9ca3af !important;
-  cursor: not-allowed;
-  opacity: 0.5;
-}
-
-/* Ensure the alternate route button is hidden initially */
-#alternateRoute {
-  display: none;
-}
-
-.title-block {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.app-icon {
-  width: 80px;
-  height: 60px;
-  object-fit: contain;
-  flex-shrink: 0;
-  border-radius: 12px;
-}
-
-.subtitle {
   font-size: 14px;
-  color: #4b5563;
 }
 
-.risk-legend {
-  display: flex;
-  gap: 16px;
-  margin-top: 12px;
-  font-size: 13px;
-  color: #374151;
+/* NEW BUTTON COLORS */
+#checkRisk {
+  background: #4ddde0;
+  color: #003049;
 }
 
-@keyframes pulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4);
-  }
-
-  70% {
-    box-shadow: 0 0 0 12px rgba(220, 38, 38, 0);
-  }
-
-  100% {
-    box-shadow: 0 0 0 0 rgba(220, 38, 38, 0);
-  }
+#safeRoute {
+  background: #80ed99;
+  color: #003049;
 }
 
-.sos-float {
-  animation: pulse 2.5s infinite;
+#checkRisk:hover,
+#safeRoute:hover {
+  opacity: 0.85;
 }
 
-.ai-status {
-  font-size: 12px;
-  background: #e0e7ff;
-  color: #1e3a8a;
-  padding: 4px 10px;
-  border-radius: 999px;
-}
-
-/* SOS TIMER BADGE */
-.sos-float {
-  position: relative;
-}
-
-.sos-timer {
-  position: absolute;
-  bottom: -6px;
-  right: -6px;
-  background: #111827;
-  color: #fff;
-  font-size: 11px;
-  padding: 2px 6px;
-  border-radius: 999px;
-}
-
-/* OVERLAY */
-.sos-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-}
-
-.sos-modal {
-  background: white;
-  padding: 24px;
-  border-radius: 16px;
-  text-align: center;
-  width: 280px;
-}
-
-.sos-actions {
-  display: flex;
-  gap: 12px;
-  margin-top: 16px;
-}
-
-.sos-actions button {
-  flex: 1;
-  padding: 10px;
+/* STATUS PANEL (NEW) */
+.status-panel {
+  background: #11184a;
+  padding: 12px;
+  margin-top: 10px;
   border-radius: 10px;
-  border: none;
-  cursor: pointer;
+  font-size: 14px;
 }
 
-/* ===== PREMIUM GRADIENT STRIPS ===== */
-
-#btnRoute::before {
-  background: linear-gradient(#60a5fa, #2563eb);
+/* NEW BUTTON COLORS */
+#checkRisk {
+  background: #4ddde0;
+  color: #003049;
 }
 
-#btnSafety::before {
-  background: linear-gradient(#34d399, #16a34a);
+#safeRoute {
+  background: #80ed99;
+  color: #003049;
 }
 
-#btnShare::before {
-  background: linear-gradient(#a78bfa, #7c3aed);
+#checkRisk:hover,
+#safeRoute:hover {
+  opacity: 0.85;
 }
 
-.card.danger.emergency-call::before {
-  background: linear-gradient(#f87171, #dc2626);
-}
-.card strong {
-  font-size: 15px;
-  font-weight: 600;
-}
-
-.card p {
-  font-size: 12px;
-  color: #6b7280;
-}
-.status-card {
-  box-shadow: 0 12px 30px rgba(34, 197, 94, 0.15);
+/* STATUS PANEL (NEW) */
+.status-panel {
+  background: #11184a;
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: 10px;
+  font-size: 14px;
 }
 
-.status-icon {
-  box-shadow: 0 6px 15px rgba(22, 163, 74, 0.25);
+/* NEW BUTTON COLORS */
+#checkRisk {
+  background: #4ddde0;
+  color: #003049;
+}
+
+#safeRoute {
+  background: #80ed99;
+  color: #003049;
+}
+
+#checkRisk:hover,
+#safeRoute:hover {
+  opacity: 0.85;
+}
+
+/* MAP BORDER ENHANCEMENT */
+#map {
+  border: 2px solid #4ddde0;
+  border-radius: 12px;
 }
